@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DE · EN · AR — Lernen</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f12;--panel:#181820;--panel2:#1f1f2a;--block:#252534;--block-hover:#2e2e40;
+  --line:#33334a;--line2:#4a4a66;--txt:#f4f4f8;--dim:#8f8fa8;
+  --acc:#5b8cff;--acc2:#8b5cf6;--ok:#22c55e;--bad:#ef4444;--warn:#f59e0b;--ar:#a78bfa;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--bg);color:var(--txt);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1200px;margin:0 auto;padding:20px}
+header{background:var(--panel);border:2px solid var(--line);padding:20px 24px;margin-bottom:16px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+header .mark{width:48px;height:48px;background:linear-gradient(135deg,var(--acc),var(--acc2));display:grid;place-items:center;font-weight:700;font-size:20px;letter-spacing:-1px;flex:none}
+header h1{font-size:1.4rem;font-weight:700;letter-spacing:-.5px}
+header .sub{color:var(--dim);font-size:.85rem;margin-top:2px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);padding:2px;border:2px solid var(--line);margin-bottom:16px}
+.tabs button{background:var(--panel);border:0;color:var(--dim);padding:16px 12px;font-family:inherit;font-size:.95rem;font-weight:600;letter-spacing:.3px;cursor:pointer;transition:.1s}
+.tabs button:hover{color:var(--txt);background:var(--panel2)}
+.tabs button.active{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff}
+.panel{background:var(--panel);border:2px solid var(--line);padding:20px;margin-bottom:16px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.panel-head h2{font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)}
+input[type=text],select,textarea{background:var(--block);border:2px solid var(--line);color:var(--txt);padding:12px 14px;font-family:inherit;font-size:.95rem;outline:none;width:100%;transition:.15s}
+input:focus,select:focus,textarea:focus{border-color:var(--acc)}
+select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238f8fa8' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+textarea{min-height:100px;resize:vertical;font-family:inherit}
+.toolbar{display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:16px}
+@media(max-width:520px){.toolbar{grid-template-columns:1fr}}
+.blocks{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px;max-height:70vh;overflow-y:auto;padding-right:4px}
+.blocks::-webkit-scrollbar{width:10px}
+.blocks::-webkit-scrollbar-track{background:var(--panel2)}
+.blocks::-webkit-scrollbar-thumb{background:var(--line2)}
+.wblock{background:var(--block);border:2px solid var(--line);padding:14px;transition:.1s;display:flex;flex-direction:column;gap:8px;min-height:100px}
+.wblock:hover{border-color:var(--line2);background:var(--block-hover)}
+.wblock .top{display:flex;align-items:flex-start;gap:8px}
+.wblock .tag{background:var(--panel2);border:1px solid var(--line2);color:var(--dim);font-size:.65rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:3px 7px}
+.wblock .de{font-size:1.15rem;font-weight:600;letter-spacing:-.3px;line-height:1.3}
+.wblock .en{color:var(--dim);font-size:.9rem;line-height:1.4}
+.wblock .ar-line{color:var(--ar);font-family:'Noto Naskh Arabic',serif;font-size:1rem;direction:rtl;text-align:right;line-height:1.7;min-height:1.4em}
+.sblock{background:var(--block);border:2px solid var(--line);padding:0;transition:.1s}
+.sblock:hover{border-color:var(--line2)}
+.sblock .line{display:grid;grid-template-columns:44px 1fr;border-bottom:1px solid var(--line)}
+.sblock .line:last-child{border-bottom:0}
+.sblock .line .label{background:var(--panel2);display:grid;place-items:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;color:var(--dim);letter-spacing:.5px;border-right:1px solid var(--line)}
+.sblock .line .text{padding:12px 14px;font-size:.92rem;line-height:1.5;overflow-wrap:anywhere}
+.sblock .line .text.ar{font-family:'Noto Naskh Arabic',serif;font-size:1.15rem;direction:rtl;text-align:right;line-height:1.9;color:var(--ar)}
+.sblock .line.en .text{color:#e0e0ec}
+.sblock .line.de .text{color:#b8b8cc;font-style:italic}
+.sblock .line.en .label{color:#5b8cff}
+.sblock .line.de .label{color:#22c55e}
+.sblock .line.ar .label{color:#a78bfa}
+.spk{background:var(--panel2);border:1px solid var(--line2);color:var(--dim);width:26px;height:26px;cursor:pointer;font-size:13px;display:grid;place-items:center;padding:0;flex:none;transition:.1s}
+.spk:hover{background:var(--acc);border-color:var(--acc);color:#fff}
+.spk.loading{background:var(--acc2);border-color:var(--acc2);color:#fff;animation:blink .7s infinite}
+@keyframes blink{50%{opacity:.4}}
+.speak-col{display:flex;align-items:center;justify-content:center;padding:0 8px;flex-direction:column;gap:4px}
+.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}
+.chip{background:var(--block);border:2px solid var(--line);padding:10px 12px;font-size:.85rem;font-weight:500;cursor:pointer;user-select:none;transition:.1s;display:flex;align-items:center;gap:8px}
+.chip:hover{border-color:var(--line2)}
+.chip input{accent-color:var(--acc);cursor:pointer;width:14px;height:14px}
+.chip.on{border-color:var(--acc);background:rgba(91,140,255,.1)}
+.field{margin-bottom:16px}
+.field>label{display:block;font-size:.75rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.check{display:flex;gap:10px;align-items:center;font-size:.9rem;padding:12px;background:var(--block);border:2px solid var(--line);cursor:pointer;margin:14px 0}
+.check input{accent-color:var(--acc);width:16px;height:16px;cursor:pointer}
+button.primary{width:100%;padding:16px;border:2px solid var(--acc);background:var(--acc);color:#fff;font-family:inherit;font-weight:700;font-size:1rem;letter-spacing:.3px;cursor:pointer;transition:.1s}
+button.primary:hover:not(:disabled){background:var(--acc2);border-color:var(--acc2)}
+button.primary:disabled{opacity:.35;cursor:not-allowed}
+.qhead{display:flex;justify-content:space-between;align-items:center;font-size:.85rem;font-weight:600;letter-spacing:.5px;margin-bottom:12px;color:var(--dim);flex-wrap:wrap;gap:8px}
+.qhead .score{color:var(--ok)}
+.qhead .streak{color:var(--warn)}
+.progress{height:6px;background:var(--panel2);border:1px solid var(--line);margin-bottom:24px;overflow:hidden}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .3s}
+.prompt{background:var(--panel2);border:2px solid var(--line);padding:28px 20px;text-align:center;margin-bottom:16px;display:flex;flex-direction:column;gap:12px;align-items:center}
+.prompt .hint{font-size:.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)}
+.prompt .bigword{font-size:2rem;font-weight:700;letter-spacing:-1px;line-height:1.2}
+.prompt .content{font-size:1.15rem;font-weight:500;line-height:1.5;max-width:640px}
+.prompt .content.ar{font-family:'Noto Naskh Arabic',serif;font-size:1.4rem;direction:rtl;line-height:1.9;color:var(--ar)}
+.opts{display:grid;gap:8px;grid-template-columns:1fr 1fr}
+@media(max-width:560px){.opts{grid-template-columns:1fr}}
+.opts.cols1{grid-template-columns:1fr}
+.opt{padding:16px;background:var(--block);border:2px solid var(--line);color:var(--txt);font-family:inherit;font-size:.95rem;text-align:left;cursor:pointer;transition:.1s;line-height:1.4;min-height:60px;display:flex;align-items:center;overflow-wrap:anywhere}
+.opt.ar{font-family:'Noto Naskh Arabic',serif;font-size:1.15rem;direction:rtl;text-align:right;line-height:1.7}
+.opt:hover:not(:disabled){border-color:var(--acc);background:var(--block-hover)}
+.opt.right{background:rgba(34,197,94,.15);border-color:var(--ok);color:#a7f3c4}
+.opt.wrong{background:rgba(239,68,68,.15);border-color:var(--bad);color:#fca5a5}
+.opt:disabled{cursor:default}
+#answerInput{font-size:1.05rem;text-align:center;padding:16px}
+#sentenceInput{font-size:1rem;line-height:1.6}
+.feedback{margin-top:16px;padding:16px;border:2px solid var(--line);border-left-width:6px;background:var(--panel2);font-size:.95rem;line-height:1.5;display:none}
+.feedback.show{display:block}
+.feedback.ok{border-left-color:var(--ok)}
+.feedback.almost{border-left-color:var(--warn)}
+.feedback.bad{border-left-color:var(--bad)}
+.feedback b{color:#fff}
+.tri{margin-top:14px;border:1px solid var(--line);background:var(--block)}
+.tri .line{display:grid;grid-template-columns:50px 1fr;border-bottom:1px solid var(--line)}
+.tri .line:last-child{border-bottom:0}
+.tri .line .lbl{background:var(--panel2);display:flex;align-items:center;justify-content:center;gap:4px;padding:10px 4px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;color:var(--dim);border-right:1px solid var(--line)}
+.tri .line .val{padding:12px 14px;overflow-wrap:anywhere}
+.tri .line.en .val{color:#e0e0ec}
+.tri .line.de .val{color:#b8b8cc;font-style:italic}
+.tri .line.ar .val{font-family:'Noto Naskh Arabic',serif;font-size:1.15rem;direction:rtl;text-align:right;line-height:1.9;color:var(--ar)}
+.score-big{font-size:3.5rem;font-weight:700;text-align:center;letter-spacing:-2px;line-height:1;margin:16px 0 8px;background:linear-gradient(135deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.statGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:24px 0}
+.statGrid .s{background:var(--block);border:2px solid var(--line);padding:16px 8px;text-align:center}
+.statGrid .s .n{font-size:1.7rem;font-weight:700;letter-spacing:-1px}
+.statGrid .s .l{font-size:.65rem;color:var(--dim);text-transform:uppercase;letter-spacing:1.2px;margin-top:4px;font-weight:600}
+.wrongList{display:grid;gap:6px;max-height:50vh;overflow-y:auto;margin-top:12px}
+.wrongItem{background:var(--block);border:2px solid var(--line);border-left:5px solid var(--bad);padding:10px 14px;font-size:.9rem}
+.wrongItem .l1{color:#e0e0ec;font-weight:600;overflow-wrap:anywhere}
+.wrongItem .l2{color:var(--dim);font-size:.82rem;margin-top:4px;font-style:italic}
+.hidden{display:none!important}
+.ar-loading{display:inline-block;width:20px;height:8px;background:linear-gradient(90deg,var(--line) 25%,var(--acc) 50%,var(--line) 75%);background-size:200% 100%;animation:slide 1.2s infinite}
+@keyframes slide{to{background-position:-200% 0}}
+.counter{display:inline-block;background:var(--panel2);border:1px solid var(--line);padding:3px 10px;font-size:.75rem;font-weight:600;letter-spacing:.5px;color:var(--dim);font-family:'JetBrains Mono',monospace}
+.empty{padding:40px;text-align:center;color:var(--dim);background:var(--block);border:2px dashed var(--line);font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="mark">▦</div>
+    <div style="flex:1">
+      <h1>DE · EN · AR</h1>
+      <div class="sub">Wörter · Sätze · Prüfung</div>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button data-view="words" class="active">▦ WÖRTER</button>
+    <button data-view="sents">▦ SÄTZE</button>
+    <button data-view="test">▦ PRÜFUNG</button>
+  </nav>
+
+  <section id="view-words">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Wörterbuch</h2>
+        <span class="counter" id="studyCount">0</span>
+      </div>
+      <div class="toolbar">
+        <input type="text" id="search" placeholder="Suchen…">
+        <select id="catFilter" style="width:auto;min-width:180px"></select>
+      </div>
+      <div class="blocks" id="studyList"></div>
+    </div>
+  </section>
+
+  <section id="view-sents" class="hidden">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Sätze</h2>
+        <span class="counter" id="sentCount">0</span>
+      </div>
+      <div class="toolbar">
+        <input type="text" id="sentSearch" placeholder="Suchen…">
+      </div>
+      <div class="blocks" id="sentList"></div>
+    </div>
+  </section>
+
+  <section id="view-test" class="hidden">
+    <div class="panel" id="setupPanel">
+      <div class="panel-head"><h2>Prüfung einrichten</h2></div>
+      <div class="field">
+        <label>Bereich</label>
+        <select id="qArea">
+          <option value="word">Wörter (Vokabeln)</option>
+          <option value="sent">Sätze aus dem Buch</option>
+        </select>
+      </div>
+      <div class="field" id="catField">
+        <label>Kategorien</label>
+        <div class="chips" id="catBoxes"></div>
+      </div>
+      <div class="field" id="modeField">
+        <label>Modus</label>
+        <select id="qMode"></select>
+      </div>
+      <div class="field" id="dirField">
+        <label>Richtung</label>
+        <select id="qDir">
+          <option value="en-de">EN → DE</option>
+          <option value="de-en">DE → EN</option>
+          <option value="de-ar">DE → AR</option>
+          <option value="en-ar">EN → AR</option>
+          <option value="ar-de">AR → DE</option>
+          <option value="mix">Gemischt</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Anzahl</label>
+        <select id="qCount">
+          <option value="10">10</option>
+          <option value="20" selected>20</option>
+          <option value="30">30</option>
+          <option value="50">50</option>
+          <option value="0">Alle</option>
+        </select>
+      </div>
+      <label class="check"><input type="checkbox" id="qWrongOnly"> Nur letzte Fehler</label>
+      <button class="primary" id="startBtn">PRÜFUNG STARTEN →</button>
+    </div>
+
+    <div class="panel hidden" id="quizPanel">
+      <div class="qhead"><span id="qProgress"></span><span id="qScore"></span></div>
+      <div class="progress"><i id="qBar"></i></div>
+      <div class="prompt" id="qPrompt"></div>
+      <div id="qBody"></div>
+      <div class="feedback" id="qFeedback"></div>
+      <button class="primary hidden" id="qNext" style="margin-top:16px">WEITER →</button>
+    </div>
+
+    <div class="panel hidden" id="resultPanel"></div>
+  </section>
+</div>
+
+<script>
+/* =========================================================
+   WÖRTERBUCH — sauber kuratiert
+   Format: "de=english|de=english|..."
+   ========================================================= */
+const RAW = {
+"Verben":"haben=to have|tun=to do|machen=to make, to do|sein=to be|bekommen=to receive, to get|holen=to fetch, to get|werden=to become|wollen=to want|gehen=to go|fahren=to drive, to go|sehen=to see|kommen=to come|sagen=to say|lassen=to let, to leave|vermieten=to rent out|gefallen=to please, to appeal to|danken=to thank|helfen=to help|reden=to talk|warten=to wait|finden=to find|rufen=to call|nennen=to name, to call|erzählen=to tell|glauben=to believe|dauern=to last|setzen=to set, to put|legen=to lay, to put|stoppen=to stop|zuhören=to listen|raten=to advise, to guess|kümmern=to care for|erinnern=to remind, to remember|verlassen=to leave, to abandon|verstehen=to understand|hören=to hear|bleiben=to stay|versuchen=to try|besitzen=to own|fragen=to ask|bitten=to request, to ask|hoffen=to hope|zeigen=to show|verletzen=to injure, to hurt|entschuldigen=to excuse, to apologize|starten=to start|töten=to kill|handeln=to act, to trade|sorgen=to worry, to care for|vergessen=to forget|verursachen=to cause|benutzen=to use|laufen=to run, to walk|bewegen=to move|treffen=to meet, to hit|schauen=to look|bringen=to bring|wünschen=to wish|vertrauen=to trust|prüfen=to check, to examine|beenden=to end, to finish|bedeuten=to mean|spielen=to play|hassen=to hate|sitzen=to sit|öffnen=to open|brechen=to break|schließen=to close|brauchen=to need|sterben=to die|stehen=to stand|schlagen=to hit, to beat|bezahlen=to pay|antworten=to answer|schlafen=to sleep|auswählen=to choose|pflücken=to pick|verlieren=to lose|kämpfen=to fight|schneiden=to cut|essen=to eat|scheinen=to seem, to shine|lieben=to love|trinken=to drink|passieren=to happen|wetten=to bet|lügen=to lie|liegen=to lie, to be located|klingen=to sound|kaufen=to buy|sprechen=to speak|denken=to think|bestellen=to order|hängen=to hang|ausgeben=to spend, to output|verbringen=to spend, to pass|kontrollieren=to control|senden=to send|ändern=to change|erklären=to explain|unterschreiben=to sign|berühren=to touch|küssen=to kiss|arbeiten=to work|heiraten=to marry|fallen=to fall|träumen=to dream|schützen=to protect|wissen=to know|tanzen=to dance|nehmen=to take|erwarten=to expect|einbeziehen=to include|schwören=to swear|fangen=to catch|gewinnen=to win|zugeben=to admit|fühlen=to feel|verpassen=to miss|vermissen=to miss|annehmen=to accept, to assume|vorstellen=to introduce, to imagine|beschuldigen=to accuse|reinigen=to clean|lernen=to learn|entspannen=to relax|beweisen=to prove|reiten=to ride|tragen=to carry, to wear|schießen=to shoot|kleben=to stick, to glue|folgen=to follow|schreiben=to write|vergeben=to forgive, to give away|zählen=to count|zustimmen=to agree|teilen=to share, to divide|anbieten=to offer|sich wundern=to be surprised|verdienen=to earn, to deserve|anziehen=to put on, to attract|genießen=to enjoy|erwähnen=to mention|kleiden=to dress|reparieren=to repair|vorbeigehen=to pass by|bedecken=to cover|beurteilen=to judge|akzeptieren=to accept|blasen=to blow|retten=to save, to rescue|sparen=to save|beitreten=to join|zurückkehren=to return|versprechen=to promise|stören=to disturb|führen=to lead|drücken=to press, to push|betreffen=to concern|regieren=to rule, to govern|unterstützen=to support|laden=to load, to invite|verstecken=to hide|verkaufen=to sell|aufhören=to stop, to quit|besuchen=to visit|schrauben=to screw|entscheiden=to decide|riechen=to smell|buchstabieren=to spell|treten=to step, to kick|greifen=to grab, to grip|diskutieren=to discuss|zerstören=to destroy|betrachten=to look at, to consider|klopfen=to knock|geben=to give|drehen=to turn|wenden=to turn|behalten=to keep|tippen=to type|buchen=to book|verschwenden=to waste|vorgeben=to pretend, to specify|springen=to jump|verhaften=to arrest|ziehen=to pull|passen=to fit|beginnen=to begin|ruinieren=to ruin|lächeln=to smile|lachen=to laugh|behandeln=to treat|bemerken=to notice|singen=to sing|erreichen=to reach, to achieve|weinen=to cry|studieren=to study|bauen=to build|hinzufügen=to add|dienen=to serve|plaudern=to chat|erscheinen=to appear|gehören=to belong|enthalten=to contain|fortsetzen=to continue|kochen=to cook|erschaffen=to create|überqueren=to cross|beschreiben=to describe|mögen=to like|ausdrücken=to express|wachsen=to grow|jagen=to hunt|einschließen=to include, to lock in|erhöhen=to increase|anzeigen=to display, to report|bügeln=to iron|heben=to lift|lesen=to read|befreien=to free|wagen=to dare|stehlen=to steal|unterrichten=to teach|rollen=to roll|wählen=to choose, to vote|bewachen=to guard|schmecken=to taste|pflegen=to care for|füllen=to fill|überzeugen=to convince|erlauben=to allow|entkommen=to escape|brennen=to burn|vermuten=to suppose, to suspect|beißen=to bite|erschrecken=to frighten|sich leisten=to afford|abstimmen=to vote|regeln=to regulate, to settle|binden=to bind, to tie|eilen=to hurry|vorschlagen=to suggest|fliegen=to fly|feiern=to celebrate|betteln=to beg|einladen=to invite|erkennen=to recognize|füttern=to feed|engagieren=to engage, to hire|einstellen=to hire, to adjust|malen=to paint|verzeihen=to forgive|warnen=to warn|überleben=to survive|bevorzugen=to prefer|beten=to pray|abhängen=to depend|schütteln=to shake|rutschen=to slip, to slide|wechseln=to change, to switch|leugnen=to deny|graben=to dig|vermeiden=to avoid|verschwinden=to disappear|frieren=to freeze|existieren=to exist|leihen=to lend, to borrow|waschen=to wash|ignorieren=to ignore|reisen=to travel|begraben=to bury|umarmen=to hug|konzentrieren=to concentrate|beabsichtigen=to intend|verwalten=to manage|unterbrechen=to interrupt|wiederholen=to repeat|verklagen=to sue|streiten=to argue|liefern=to deliver|leiden=to suffer|absagen=to cancel|vorbereiten=to prepare|schwimmen=to swim|ausführen=to carry out|ersetzen=to replace|bereitstellen=to provide|bewältigen=to cope with|erwerben=to acquire|backen=to bake|sich verhalten=to behave|beschäftigen=to occupy, to employ|ermöglichen=to enable|braten=to fry, to roast|erfüllen=to fulfill|lehnen=to lean|aufrechterhalten=to maintain|beobachten=to observe|erhalten=to receive, to maintain|besetzen=to occupy|vorkommen=to occur|bedienen=to serve, to operate|widersetzen=to resist|teilnehmen=to participate|qualifizieren=to qualify|reagieren=to react|empfangen=to receive|segeln=to sail|kratzen=to scratch|suchen=to search|trennen=to separate|unternehmen=to undertake|variieren=to vary|aufwachen=to wake up|wandern=to hike|vorhersagen=to predict|üben=to practice|reduzieren=to reduce|schreien=to scream|einreichen=to submit|übersetzen=to translate|dösen=to doze",
+
+"Nomen":"Recht=right, law|Dose=can, tin|Konserve=canned food|Rücken=back|Weg=way, path|Art=kind, way|Entschuldigung=excuse, apology|Mann=man|Mensch=human, person|Leben=life|Hilfe=help|Gespräch=conversation|Leute=people|Volk=people, nation|Gott=God|Ding=thing|Sache=thing, matter|Anruf=call|Nacht=night|Zuhause=home|Heimat=home, homeland|Halt=stop, hold|Menge=amount, quantity|Los=lot, ticket|Vermutung=guess|Sorge=worry, care|Mama=mom|Papa=dad|Mutter=mother|Ort=place|Platz=place, square|Baby=baby|Vater=father|Kurs=course|Verlauf=course, progress|Macht=power|Geist=spirit, mind|Verstand=mind, reason|Hölle=hell|Familie=family|Haus=house|Idee=idea|Frau=woman, wife|Zimmer=room|Raum=room, space|Geld=money|Sohn=son|Hoffnung=hope|Name=name|Mädchen=girl|Herr=mister, gentleman|Show=show|Mai=May|Welt=world|Honig=honey|Schatz=treasure, darling|Schmerz=pain|Ausrede=excuse|Anfang=beginning|Auto=car|Deal=deal|Abmachung=agreement|Freund=friend|Kopf=head|Zeug=stuff|Sekunde=second|Teil=part|Wahrheit=truth|Schule=school|Gesicht=face|Geschäft=business, shop|Ursache=cause|Ehefrau=wife|Chance=chance|Umzug=move|Person=person|Herz=heart|Punkt=point|Telefon=telephone|Grund=reason, ground|Blick=look, view|Fall=case, fall|Koffer=suitcase|Wunsch=wish|Scheck=check|Ende=end|Stadt=city|Jahr=year|Tatsache=fact|Party=party|Ruhe=calm, quiet|Rest=rest|Spaß=fun|Kind=child|Tag=day|Schwester=sister|Minute=minute|bisschen=a bit|Paar=pair, couple|Tochter=daughter|Pause=break|Tür=door|Satz=sentence|Arzt=doctor|Spaziergang=walk|Ärger=trouble, anger|Mine=mine|Zeit=time|Krankenhaus=hospital|Hochzeit=wedding|Polizei=police|Treffer=hit|Geschichte=story, history|Abendessen=dinner|Ehemann=husband|Antwort=answer|Büro=office|Nachrichten=news|Moment=moment|Männer=men|Bett=bed|Datum=date|Verabredung=date, appointment|Linie=line|Zeile=line, row|Feuer=fire|Hand=hand|Kampf=fight|Vergangenheit=past|Nummer=number|Spiel=game|Tod=death|Kinder=children|Vorderseite=front|Schuss=shot|Liebe=love|Getränk=drink|Sinn=sense, meaning|Blut=blood|Treffen=meeting|Kaffee=coffee|Geräusch=noise|Fehler=mistake|Schuld=guilt, debt|Wasser=water|Frauen=women|Stunde=hour|Weihnachten=Christmas|Körper=body|Befehl=order, command|Ordnung=order|Firma=company|Gesellschaft=society, company|Griff=grip, handle|Kontrolle=control|Ehe=marriage|Präsident=president|Sex=sex|Bild=picture|Schild=sign, shield|Junge=boy|Beziehung=relationship|Haar=hair|Wahl=choice, election|Geheimnis=secret|Zukunft=future|Glück=luck, happiness|Kran=crane|Frage=question|Gnade=mercy|Wort=word|Essen=food|Arbeit=work|Licht=light|Test=test|Tropfen=drop|Traum=dream|Klasse=class|Überraschung=surprise|Waffe=weapon|Situation=situation|Woche=week|Akt=act|Spitze=tip, top|Stück=piece|Gesetz=law|Film=film|Land=country|Schritt=step|Herbst=autumn|Hund=dog|Problem=problem|Mord=murder|Auge=eye|Abend=evening|Reise=trip|Club=club|Straße=street|Wohnung=apartment|Gericht=court, dish|Hof=yard, court|Wohltätigkeit=charity|Unfall=accident|Nachricht=message, news|Interesse=interest|Tisch=table|Mund=mouth|Mitte=middle|Ring=ring|Team=team|Figur=figure|Zahl=number|Stock=stick, floor|Strahl=beam, ray|Kumpel=buddy|Engel=angel|Krieg=war|Gefängnis=prison|Mittagessen=lunch|Musik=music|Band=band|College=college|Geburtstag=birthday|Rechnung=bill, invoice|Eile=hurry|Füße=feet|Wunder=miracle|Entscheidung=decision|Gebäude=building|Stimme=voice|Liste=list|Kleid=dress|Jesus=Jesus|Hotel=hotel|Respekt=respect|Aufmerksamkeit=attention|Bar=bar|Pass=pass|Geschenk=gift|Selbst=self|Tante=aunt|Dollar=dollar|Anwalt=lawyer|Plan=plan|Freundin=girlfriend|Boden=floor, ground|Erde=earth, soil|Kiste=box, crate|Richter=judge|Station=station|Flugzeug=airplane|Sicherheit=safety, security|Bericht=report|Unterschied=difference|Tasche=bag, pocket|Ball=ball|Zweifel=doubt|Park=park|Rekord=record|Schlüssel=key|Kapitän=captain|Karte=card, map|Verbrechen=crime|Fenster=window|Seele=soul|Witz=joke|Service=service|Magie=magic|Onkel=uncle|Insel=island|Zelle=cell|Rat=advice, council|Chef=boss|Regel=rule|Sommer=summer|Risiko=risk|Offizier=officer|Beamter=official|Nachmittag=afternoon|Sitz=seat|Lied=song|Anklage=accusation, charge|Gebühr=fee|Patient=patient|Boot=boat|Gehirn=brain|General=general|Frühstück=breakfast|Alter=age|Vergnügen=pleasure|System=system|Glaube=faith, belief|Monat=month|Schraube=screw|Brief=letter|Presse=press|Narr=fool|Erinnerung=memory|Markierung=mark|Note=grade, note|Brett=board|Position=position|Anhörung=hearing|Hören=hearing|Rose=rose|Küche=kitchen|Kraft=strength, force|Fliege=fly|Weltraum=space|Katze=cat|Meile=mile|Idiot=idiot|Felsen=rock|Rock=skirt, rock|Agent=agent|Haufen=pile, heap|Spur=trace, track|Gleis=track|Schuhe=shoes|Szene=scene|Frieden=peace|Dämon=demon|Glocke=bell|Bargeld=cash|Abteilung=department|Nase=nose|Bier=beer|Angriff=attack|Wochenende=weekend|Materie=matter|Typ=guy, type|Gelegenheit=opportunity|König=king|Buch=book|Maschine=machine|Verschwendung=waste|Gefahr=danger|Wand=wall|Beweis=proof, evidence|Anzug=suit|Droge=drug|Scheidung=divorce|Fisch=fish|Angst=fear|Bernstein=amber|Kerl=guy|Post=mail|Mitteilung=message|Papier=paper|Notiz=note|Kirche=church|Badezimmer=bathroom|Glas=glass|Baum=tree|Kontakt=contact|Kuchen=cake|Partner=partner|Bus=bus|Computer=computer|Studie=study|Stern=star|Bereich=area|Wind=wind|Huhn=chicken|Held=hero|Meer=sea|Samstag=Saturday|Geburt=birth|Vogel=bird|Großmutter=grandmother|Westen=west|Lektion=lesson|Hitze=heat|Geschwindigkeit=speed|Milch=milk|Regen=rain|Zucker=sugar|Markt=market|Prozess=process, trial|Stein=stone|Fluss=river|Affe=monkey|Schwein=pig|Signal=signal|Tasse=cup|Biene=bee|Addition=addition|Winkel=angle|Tier=animal|Apfel=apple|Kunst=art|Bank=bank, bench|Basis=basis|Bär=bear|Block=block|Knochen=bone|Hauptstadt=capital city|Zentrum=center|Jahrhundert=century|Kreis=circle|Wolke=cloud|Kosten=costs|Säule=column, pillar|Zustand=state, condition|Kopie=copy|Kuh=cow|Kreuz=cross|Wüste=desert|Design=design|Detail=detail|Wörterbuch=dictionary|Richtung=direction|Ohr=ear|Osten=east|Rand=edge|Wirkung=effect|Ei=egg|Element=element|Energie=energy|Motor=engine|England=England|Englisch=English|Beispiel=example|Express=express|Bauernhof=farm|Feld=field|Finger=finger|Blume=flower|Fuß=foot|Wald=forest|Form=form, shape|Obst=fruit|Garten=garden|Gas=gas|Gold=gold|Gruppe=group|Hut=hat|Loch=hole|Pferd=horse|Eis=ice, ice cream|Zoll=customs, inch|Information=information|Insekt=insect|Instrument=instrument|Eisen=iron|Job=job|Dame=lady|See=lake|Sprache=language|Bein=leg|Länge=length|Ebene=level, plain|Aufzug=elevator|Haupt=head, chief|Marsch=march|Speck=bacon|Lücke=gap|Pfanne=pan|Morgen=morning, tomorrow|Verteidigung=defense|Planung=planning|Flug=flight|Flucht=escape|Zeuge=witness|Prinzessin=princess|Versuch=attempt|Brötchen=bread roll|Radio=radio|Notfall=emergency|Kredit=credit, loan|Anerkennung=recognition|Nuss=nut|Preis=price, prize|Wächter=guard|Stimmung=mood|Trick=trick|Druck=pressure|Arm=arm|Geschmack=taste|Hals=neck, throat|Süden=south|Krankenschwester=nurse|Datei=file|Akte=file, record|Feile=file|Schloss=castle, lock|Wein=wine|Schreiben=letter, writing|Fleck=spot, stain|Gerechtigkeit=justice|Schlafzimmer=bedroom|Dusche=shower|Kamera=camera|Atem=breath|Hose=pants|Unterhose=underwear|Ausraster=tantrum, outburst|Aktion=action|Handlung=action, plot|Sahne=cream|Creme=cream|Fokus=focus|Schreibtisch=desk|Klient=client|Hemd=shirt|Stuhl=chair|Regierung=government|Halle=hall|Pack=pack, bunch|Bedeutung=meaning|Schiff=ship|Subjekt=subject|Gast=guest|Streichholz=match|Sonne=sun|Operation=operation, surgery|Flasche=bottle|Meinung=opinion|Gesundheit=health|Video=video|Cousin=cousin|Haut=skin|Rede=speech|Ausgabe=issue, output|Thema=topic|Ergebnis=result|Code=code|Forschung=research|Restaurant=restaurant|Seite=page, side|Adresse=address|Zug=train|Bedauern=regret|Güte=kindness|Himmel=sky, heaven|Verantwortung=responsibility|Verdacht=suspicion|Ecke=corner|Mission=mission|Lastwagen=truck|Zähne=teeth|Flughafen=airport|Biss=bite|Lügner=liar|Van=van|Projekt=project|Suche=search|Schaden=damage|Strand=beach|Leidenschaft=passion|Freitag=Friday|Krawatte=tie|Champagner=champagne|Verbindung=connection|Sparen=saving|Ticket=ticket|Personal=staff|Planet=planet|Pflicht=duty|Praxis=practice, office|Armee=army|Warnung=warning|Königin=queen|Einkaufen=shopping|Monster=monster|Anblick=sight|Vampir=vampire|Braut=bride|Mantel=coat|Konto=account|Mond=moon|Lippen=lips|Sorgerecht=custody|Größe=size|Toast=toast|Student=student|Realität=reality|Haltung=attitude, posture|Vorteil=advantage|Großvater=grandfather|Oma=grandma|Käse=cheese|Dach=roof|Pizza=pizza|Öffnung=opening|Bombe=bomb|Runde=round|Fernsehen=television|Harmonie=harmony|Farbe=color|Zeitplan=schedule|Meister=master|Hinweis=hint, note|Termin=appointment|Natur=nature|Lehrer=teacher|Bedrohung=threat|Scham=shame|Jacke=jacket|Haken=hook|Verlierer=loser|Hafen=harbor|Krimineller=criminal|Opfer=victim|Professor=professor|Begräbnis=funeral|Couch=couch|Stärke=strength|Verlust=loss|Aussicht=view, prospect|Schönheit=beauty|Schock=shock|Schokolade=chocolate|Charakter=character|Feind=enemy|Absturz=crash|Prozent=percent|Zweck=purpose|Norden=north|Messer=knife|Fan=fan|Schrank=cupboard, wardrobe|Süßigkeit=candy|Posten=post, item|Müllhalde=dump|Miete=rent|Handel=trade|Erntedankfest=Thanksgiving|Rache=revenge|Programm=program|Aussage=statement|Fleisch=meat|Trinkgeld=tip|Affäre=affair|Jury=jury|Sturm=storm|Prinz=prince|Interview=interview|Fußball=soccer|Erklärung=explanation|Stil=style|Assistent=assistant|Medizin=medicine|Umstand=circumstance|Bühne=stage|Lizenz=license|Gemeinschaft=community|Müll=garbage|Freundschaft=friendship|Magen=stomach|Tal=valley|Vertrag=contract|Rasse=race|Lebenszeit=lifetime|Gemälde=painting|Uhr=clock, watch|Gewicht=weight|Träne=tear|Kugel=ball, bullet|Frühling=spring|Punktzahl=score|Fremder=stranger|Schnee=snow|Vermögen=fortune, assets|Versicherung=insurance|Karriere=career|Aktie=share, stock|Mode=fashion|Freiheit=freedom|Timing=timing|Garantie=guarantee|Brust=chest, breast|Brücke=bridge|Quelle=source|Theorie=theory|Lager=camp, warehouse|Saft=juice|Zugang=access|Überschrift=headline|Öl=oil|Periode=period|Puppe=doll|Lärm=noise|Wissenschaft=science|Spieler=player|Zeremonie=ceremony|Pflock=peg|Fahrrad=bicycle|Wetter=weather|Stress=stress|Erlaubnis=permission|Möglichkeit=possibility|Freigabe=release|Freude=joy|Eigentum=property|Vision=vision|Mitglied=member|Schlacht=battle|Begriff=term, concept|Teufel=devil|Mahlzeit=meal|Wut=rage|Flitterwochen=honeymoon|Kaution=bail, deposit|Parken=parking|Schutz=protection|Manager=manager|Morgendämmerung=dawn|Kampagne=campaign|Foto=photo|Komfort=comfort|Schulter=shoulder|Talent=talent|Garage=garage|Erfolg=success|Training=training|Riss=crack, tear|Modell=model|Radar=radar|Zwischenzeit=meantime|Krebs=cancer|Schicksal=fate|Bruder=brother|Fahrer=driver|Kehle=throat|Abschlussball=prom|Einheit=unit|Crew=crew|Mitternacht=midnight|Bedingungen=conditions|Mut=courage|Zunge=tongue|Entfernung=distance|Konferenz=conference|Behandlung=treatment|Schuh=shoe|Keller=basement|Handtasche=handbag|Brillen=glasses|Kabine=cabin|Universum=universe|Spiegel=mirror|Wunde=wound|Reaktion=reaction|Verlobung=engagement|Therapie=therapy|Magazin=magazine|Suppe=soup|Einsatz=deployment, use|Chefkoch=chef|Genie=genius|Entführung=kidnapping|Quadrat=square|Reinigung=cleaning|Schicht=shift, layer|Teller=plate|Tour=tour|Sonntag=Sunday|Peitsche=whip|Paket=package|Krankheit=illness|Büste=bust|Treppe=stairs|Alarm=alarm|Nagel=nail|Nerv=nerve|Hügel=hill|Gasse=alley|Schmutz=dirt|Bindung=bond|Briefmarke=stamp|Leiden=suffering|Reiten=riding|Katastrophe=catastrophe|Rate=rate|Falle=trap|Anspruch=claim|Truthahn=turkey|Schlange=snake, line|Geständnis=confession|Liebhaber=lover|Eindruck=impression|Tor=gate, goal|Fantasie=fantasy|Ruf=call, reputation|Wissen=knowledge|Gasthaus=inn|Europa=Europe|Argument=argument|Hausaufgabe=homework|Direktor=principal, director|Bad=bath, bathroom|Rad=wheel|Krise=crisis|Montag=Monday|Gentleman=gentleman|Toilette=toilet|Vereinbarung=agreement|Klinik=clinic|Austausch=exchange|Universität=university|Last=load, burden|Winter=winter|Feiertag=holiday|Material=material|Elternteil=parent|Holz=wood|Artikel=article|Mathematik=mathematics|Zuschuss=subsidy, grant|Orange=orange|Donnerstag=Thursday|Brot=bread|Stille=silence|Ente=duck|Butter=butter|Karotte=carrot|Alkohol=alcohol|Kopfschmerzen=headache|Tennis=tennis|Dienstag=Tuesday|Theater=theater|Führer=leader|Fähigkeit=ability|Flügel=wing|Tradition=tradition|Handtuch=towel|Gewohnheit=habit|Ereignis=event|Korb=basket|Gleichgewicht=balance|Übung=exercise, practice|Dorf=village|Versorgung=supply, care|Kaugummi=chewing gum|Emotion=emotion|Rindfleisch=beef|Neffe=nephew|Sieg=victory|Titel=title|Möbel=furniture|Decke=blanket, ceiling|Oberfläche=surface|Nichte=niece|Handschuhe=gloves|Seife=soap|Unterschrift=signature|Zoo=zoo|Missbrauch=abuse|Barriere=barrier|Batterie=battery|Bart=beard|Behälter=container|Keks=cookie|Bonus=bonus|Bürste=brush|Eimer=bucket|Budget=budget|Metzger=butcher|Teppich=carpet|Zentimeter=centimeter|Müsli=cereal, muesli|Zertifikat=certificate|Champion=champion|Chemikalie=chemical|Kirsche=cherry|Zigarette=cigarette|Kino=cinema|Bürger=citizen|Klassenzimmer=classroom|Daten=data|Liebling=darling, favorite|Verzögerung=delay|Tagebuch=diary|E-Mail=email|Finanzen=finances|Formel=formula|Kühlschrank=refrigerator|Industrie=industry|Verletzung=injury|Institut=institute|Marmelade=jam|Journalist=journalist|Abwesenheit=absence|Wasserkocher=kettle|Tastatur=keyboard|Knie=knee|Etikett=label|Labor=laboratory|Mangel=lack, shortage|Leiter=ladder, leader|Lamm=lamb|Lampe=lamp|Vermieter=landlord|Anführer=leader|Führung=leadership, tour|Blatt=leaf, sheet|Leder=leather|Freizeit=free time|Protokoll=protocol, minutes|Bibliothek=library|Wartung=maintenance|Einkaufszentrum=shopping mall|Nachbar=neighbor|Netz=net|Netzwerk=network|Objekt=object|Einwand=objection|Verpflichtung=obligation|Beobachtung=observation|Ozean=ocean|Tempo=speed, tempo|Palast=palace|Panik=panic|Parlament=parliament|Passagier=passenger|Geduld=patience|Pfad=path|Muster=pattern, sample|Zahlung=payment|Qualität=quality|Schiene=rail|Eisenbahn=railway|Quittung=receipt|Salat=salad|Gehalt=salary|Verkauf=sale|Salz=salt|Sand=sand|Sandwich=sandwich|Satellit=satellite|Zufriedenheit=satisfaction|Sauce=sauce|Wurst=sausage|Skala=scale|Schema=scheme|Bildschirm=screen|Skript=script|Siegel=seal|Jahreszeit=season|Samen=seed|Sequenz=sequence|Diener=servant|Sitzung=session|Siedlung=settlement|Schatten=shadow|Tablette=pill, tablet|Schwanz=tail|Ziel=goal, target|Aufgabe=task|Steuer=tax|Taxi=taxi|Tee=tea|Fernseher=television set|Technologie=technology|Temperatur=temperature|Uniform=uniform|Urlaub=vacation|Variation=variation|Gemüse=vegetable|Lohn=wage|Kleiderschrank=wardrobe|Schwäche=weakness|Reichtum=wealth|Website=website|Wolle=wool|Werkstatt=workshop|Kilometer=kilometer|Mittagszeit=midday|Link=link|Flüssigkeit=liquid|Limit=limit|Literatur=literature|Pilz=mushroom|Muskel=muscle|Bewegung=movement|Maus=mouse|Berg=mountain|Schüler=pupil, student|Kneipe=pub|Lob=praise|Kartoffel=potato|Postamt=post office|Pool=pool|Politiker=politician|Polizist=policeman|Gedicht=poem|Stecker=plug|Benzin=gasoline|Pfeffer=pepper|Rente=pension|Bleistift=pencil|Region=region|Reis=rice|Wissenschaftler=scientist|Schaf=sheep|Regal=shelf|Sänger=singer|Scheibe=slice, disc|Rauchen=smoking|Löffel=spoon|Steak=steak|Erdbeere=strawberry|Supermarkt=supermarket|Symbol=symbol|Territorium=territory|Text=text|Zehe=toe|Tomate=tomato|Zahn=tooth|Tourist=tourist|Turm=tower|Transport=transport|Rohr=pipe|Jugend=youth|Untersuchung=investigation, examination|Rebe=vine|T-Shirt=t-shirt|Aprikose=apricot|Attribut=attribute|Käfer=beetle|Klammer=clamp, bracket|Verfall=decay|Liter=liter|Meter=meter|Substantiv=noun|Taube=dove, pigeon",
+
+"Adjektive":"gerecht=just, fair|ganz=whole, entire|richtig=correct, right|recht=right|gut=good|klein=small|sicher=safe, sure|traurig=sad|großartig=great|groß=big|besser=better|erste=first|fein=fine|letzte=last|lang=long|falsch=wrong, false|neu=new|schlecht=bad|nett=nice|eigen=own|alt=old|echt=real, genuine|gleich=same, equal|glücklich=happy|hübsch=pretty|tot=dead|hart=hard|schwer=heavy, difficult|bereit=ready|verloren=lost|spät=late|gemein=mean|schön=beautiful|verrückt=crazy|offen=open|wichtig=important|froh=glad|einfach=simple, easy|anders=different|in Ordnung=okay, fine|fähig=capable|perfekt=perfect|lustig=funny|dumm=stupid|cool=cool|jung=young|ernst=serious|hoch=high|wunderbar=wonderful|krank=sick|verärgert=annoyed|klar=clear|heiß=hot|süß=sweet|lebendig=alive|besonders=special|voll=full|lieb=dear|schlimmer=worse|weiß=white|schnell=fast|arm=poor|wütend=angry|wert=worth|beschäftigt=busy|schwarz=black|persönlich=personal|stark=strong|böse=evil, angry|ehrlich=honest|müde=tired|menschlich=human|rot=red|ruhig=calm|fair=fair|schrecklich=terrible|sauber=clean|klug=smart|schwanger=pregnant|vorsichtig=careful|stolz=proud|interessant=interesting|dunkel=dark|normal=normal|privat=private|schlimmste=worst|seltsam=strange|fest=firm, solid|einzeln=single, individual|blau=blue|tief=deep|schuldig=guilty|schwierig=difficult|öffentlich=public|gebrochen=broken|nervös=nervous|allgemein=general|riesig=huge|sterbend=dying|schwul=gay|fröhlich=cheerful|doppelt=double|langsam=slow|hungrig=hungry|fett=fat|niedrig=low|betrunken=drunk|extra=extra|unmöglich=impossible|vollständig=complete|warm=warm|leichter=lighter, easier|romantisch=romantic|bequem=comfortable|fit=fit|aufgeregt=excited|grün=green|ausgezeichnet=excellent|trocken=dry|super=super|braun=brown|kalt=cold|gemeinsam=common, together|berühmt=famous|flach=flat|frisch=fresh|archaisch=archaic|relevant=relevant|schmutzig=dirty|liebevoll=loving|positiv=positive|weinend=crying|angezogen=dressed|legal=legal|größer=bigger|Französisch=French|wild=wild|rau=rough|leer=empty|rund=round|bewusst=conscious|eng=narrow, tight|verwirrt=confused|nackt=naked|notwendig=necessary|final=final|dankbar=grateful|üblich=usual|folgend=following|ruiniert=ruined|älter=older|verzweifelt=desperate|locker=loose|heilig=holy|laut=loud|hell=bright|blind=blind|hässlich=ugly|brillant=brilliant|professionell=professional|mächtig=powerful|gefälscht=fake|aufregend=exciting|bedeckt=covered|vertraut=familiar|korrekt=correct|vergessen=forgotten|sozial=social|blutig=bloody|einsam=lonely|lokal=local|gruselig=creepy|kostbar=precious|wachsend=growing|größte=biggest|elend=miserable|gesund=healthy|langweilig=boring|neugierig=curious|verfügbar=available|übrig=remaining|fantastisch=fantastic|national=national|mutig=brave|stärker=stronger|gutaussehend=handsome|unglaublich=unbelievable|mies=lousy|schwach=weak|wach=awake|offiziell=official|regelmäßig=regular|sexuell=sexual|billig=cheap|verändernd=changing|winzig=tiny|besonderer=special|anständig=decent|vereint=united|schick=chic, stylish|original=original|selbstsüchtig=selfish|weise=wise|verpflichtet=obligated|unbequem=uncomfortable|schneller=faster|junior=junior|negativ=negative|fabelhaft=fabulous|nass=wet|chinesisch=Chinese|sensibel=sensitive|besorgniserregend=worrying|blutend=bleeding|unhöflich=rude|weich=soft|verbunden=connected|beschämt=ashamed|emotional=emotional|teuer=expensive|gefangen=trapped, caught|männlich=male|charmant=charming|attraktiv=attractive|erledigt=done|rein=pure|werdend=becoming|freundlich=friendly|ekelhaft=disgusting|föderal=federal|gesprochen=spoken|rosa=pink|breit=wide|beliebt=popular|königlich=royal|alltäglich=everyday|hilfreich=helpful|nutzlos=useless|stur=stubborn|taub=deaf|östlich=eastern|wirtschaftlich=economic|häufig=frequent|eifrig=eager|faul=lazy|logisch=logical|massiv=massive|einheimisch=native|frech=cheeky|blass=pale|sekundär=secondary|senior=senior|vernünftig=reasonable|streng=strict|unfähig=incapable|gelb=yellow|westlich=western|hölzern=wooden|musikalisch=musical|nördlich=northern|schlank=slim|einzig=only|traditionell=traditional|unwahrscheinlich=unlikely|nützlich=useful|visuell=visual|prägnant=concise",
+
+"Zahlwörter":"eins=one|zwei=two|drei=three|vier=four|fünf=five|sechs=six|sieben=seven|acht=eight|neun=nine|zehn=ten|elf=eleven|zwölf=twelve|fünfzehn=fifteen|achtzehn=eighteen|zwanzig=twenty|dreißig=thirty|vierzig=forty|fünfzig=fifty|siebzig=seventy|neunzig=ninety|hundert=hundred|tausend=thousand|Million=million|Dutzend=dozen|zweite=second|dritte=third|vierte=fourth",
+
+"Modalverben":"können=can, to be able to|wollen=to want|müssen=must, to have to|könnte=could|dürfen=may, to be allowed to|würde=would|sollen=should|mögen=to like",
+
+"Konjunktionen":"und=and|dass=that|aber=but|wenn=if, when|ob=whether|wann=when|oder=or|weil=because|als=than, when|bevor=before|während=while|entweder=either|obwohl=although|weder=neither|wohingegen=whereas",
+
+"Artikel":"der=the|die=the|das=the|ein=a, an|eine=a, an|kein=no, not any|keine=no, not any",
+
+"Präpositionen":"zu=to|nach=after, to|von=from, of|in=in|für=for|auf=on|an=on, at|mit=with|über=over, about|um=around|bei=at, with|vor=before, in front of|durch=through|seit=since|bis=until|ohne=without|zwischen=between|unter=under|gegen=against|hinter=behind|entlang=along|außer=except|während=during|jenseits=beyond|innerhalb=inside, within|neben=next to|ungleich=unlike|aus=out of, from",
+
+"Pronomen":"du=you|ihr=you (plural), her|Sie=you (formal)|ich=I|mich=me|mir=to me|dies=this|dieser=this|diese=this|dieses=this|mein=my|meine=my|dein=your|Ihre=your (formal)|wir=we|alles=everything|alle=all|er=he|sie=she, they|ihn=him|ihm=to him|man=one, you (general)|sein=his, to be|seine=his|wer=who|einige=some|etwas=something|uns=us|unser=our|irgendetwas=anything|irgendein=any|jene=those|jeder=everyone, each|jemand=someone|ein anderer=another|dich selbst=yourself|welche=which|mich selbst=myself|beide=both|was auch immer=whatever|meist=most|irgendjemand=somebody|solch=such|niemand=nobody|keiner=none|sich selbst=himself|was=what|wen=whom|andere=others|wessen=whose|mehrere=several|nichts=nothing|es=it|viele=many|wer auch immer=whoever",
+
+"Adverbien":"gerade=just, right now|eben=just|nur=only|gut=well|nun=now|wohl=probably|ungefähr=about, approximately|genau=exactly|hier=here|heraus=out|aus=out|hinaus=out|hinauf=up|oben=above|jetzt=now|dort=there|da=there|warum=why|wirklich=really|wann=when|zurück=back|dann=then|nie=never|auch=also|zu=too|mehr=more|vorbei=past, over|wo=where|vielleicht=maybe|hinunter=down|unten=below|sehr=very|viel=much|sogar=even|weg=away|still=quietly|noch=still|wieder=again|jemals=ever|immer=always|zusammen=together|eigentlich=actually|tatsächlich=indeed|sonst=otherwise|genug=enough|links=left|heute Abend=tonight|schon=already|wahrscheinlich=probably|allein=alone|heute=today|einmal=once|bald=soon|später=later|sowieso=anyway|morgen=tomorrow|nicht mehr=no longer|fast=almost|manchmal=sometimes|innen=inside|voraus=ahead|ziemlich=quite|endlich=finally|absolut=absolutely|wie=how|draußen=outside|total=totally|sicherlich=certainly|irgendwo=somewhere|offensichtlich=obviously|für immer=forever|außerdem=besides|eher=rather|weniger=less|stattdessen=instead|früh=early|nah=near|getrennt=separately|möglich=possibly|gestern=yesterday|kürzlich=recently|ernsthaft=seriously|irgendwie=somehow|normalerweise=normally|vorwärts=forward|plötzlich=suddenly|früher=earlier|reichlich=plenty|zweimal=twice|ehrlich=honestly|kaum=barely|plus=plus|wahrhaftig=truly|oft=often|nirgendwo=nowhere|überall=everywhere|weiter=further|persönlich=personally|klar=clearly|jedoch=however|eines Tages=one day|schließlich=finally|praktisch=practically|schlecht=badly|irgendwann=sometime|beiseite=aside|jederzeit=anytime|wo auch immer=wherever|im Grunde=basically|offen=openly|meistens=mostly|hervor=forth|hauptsächlich=mainly|in der Nähe=nearby|nett=nicely|natürlich=naturally|teilweise=partly|selten=seldom|größtenteils=largely|Übersee=overseas|doch=yet",
+
+"Interjektionen":"Hallo=hello|Tschüss=bye|Auf Wiedersehen=goodbye|okay=okay",
+
+"Partikeln":"nein=no|nicht=not|ja=yes|auf keinen Fall=no way"
+};
+
+const WORDS = [];
+const CATS = Object.keys(RAW);
+for (const cat of CATS) {
+  RAW[cat].split("|").forEach(item => {
+    const p = item.indexOf("=");
+    if (p < 0) return;
+    const de = item.slice(0, p).trim();
+    const en = item.slice(p + 1).trim();
+    if (!de || !en) return;
+    WORDS.push({ de, en, cat, alts: en.split(/[,/]/).map(s => s.trim()).filter(Boolean) });
+  });
+}
+
+const SENT_RAW = `You are the best friend I have.|Du bist der beste Freund, den ich habe.
+I really enjoy reading books.|Ich lese wirklich gerne Bücher.
+I went to the store earlier.|Ich war vorhin im Geschäft.
+The sky looks beautiful today.|Der Himmel sieht heute wunderschön aus.
+I like both tea and coffee.|Ich mag sowohl Tee als auch Kaffee.
+I know that you mean well.|Ich weiß, dass du es gut meinst.
+This is a cup of hot tea.|Das ist eine Tasse heißer Tee.
+Please wait for me outside.|Bitte warte draußen auf mich.
+She lives in a small town.|Sie lebt in einer kleinen Stadt.
+This is my favorite place.|Das ist mein Lieblingsort.
+I bought a gift for my mom.|Ich habe ein Geschenk für meine Mama gekauft.
+No, I don't think that's right.|Nein, ich glaube nicht, dass das richtig ist.
+I have three younger siblings.|Ich habe drei jüngere Geschwister.
+My backpack is very heavy.|Mein Rucksack ist sehr schwer.
+I just finished my homework.|Ich habe gerade meine Hausaufgaben fertig gemacht.
+That answer is not correct.|Diese Antwort ist nicht richtig.
+Please do your chores now.|Bitte mach jetzt deine Hausarbeiten.
+I want to become a doctor.|Ich möchte Arzt werden.
+The book is on the shelf.|Das Buch liegt im Regal.
+Your hair looks really nice.|Deine Haare sehen wirklich schön aus.
+She was happy with the results.|Sie war mit den Ergebnissen zufrieden.
+We are leaving in five minutes.|Wir fahren in fünf Minuten los.
+I came here with my cousin.|Ich bin mit meinem Cousin hierher gekommen.
+I'm tired, but I'm still smiling.|Ich bin müde, aber ich lächle trotzdem.
+All students must wear uniforms.|Alle Schüler müssen Uniformen tragen.
+She plays the piano very well.|Sie spielt sehr gut Klavier.
+He goes for a run daily.|Er geht täglich laufen.
+We talked about our summer plans.|Wir haben über unsere Sommerpläne gesprochen.
+Turn left at the traffic light.|Biege an der Ampel links ab.
+Could you get some bread please?|Könntest du bitte etwas Brot holen?
+Come here and look at this.|Komm her und sieh dir das an.
+Get your shoes on quickly.|Zieh schnell deine Schuhe an.
+If you need help, just ask.|Wenn du Hilfe brauchst, frag einfach.
+I gave her a birthday card.|Ich habe ihr eine Geburtstagskarte gegeben.
+She works as a teacher now.|Sie arbeitet jetzt als Lehrerin.
+Can you pass me the salt?|Kannst du mir das Salz reichen?
+Wake up, it's already morning.|Wach auf, es ist bereits Morgen.
+I want to travel abroad someday.|Ich möchte eines Tages ins Ausland reisen.
+Leave now, or you'll miss the bus.|Geh jetzt, sonst verpasst du den Bus.
+Let's go to the beach tomorrow.|Lass uns morgen an den Strand gehen.
+I told him the whole story.|Ich habe ihm die ganze Geschichte erzählt.
+Place your bags over there.|Stell deine Taschen dort drüben ab.
+One ticket is enough for me.|Eine Eintrittskarte reicht für mich.
+Why don't you sit down?|Warum setzt du dich nicht?
+I see a cat on the roof.|Ich sehe eine Katze auf dem Dach.
+Come over and watch the game.|Komm vorbei und schau dir das Spiel an.
+Good job on your presentation!|Gute Arbeit bei deiner Präsentation!
+They are moving to a new city.|Sie ziehen in eine neue Stadt um.
+I really appreciate your kindness.|Ich schätze deine Freundlichkeit sehr.
+When are you coming back?|Wann kommst du zurück?
+I came back home very late.|Ich bin sehr spät nach Hause gekommen.
+I'm originally from California.|Ich komme ursprünglich aus Kalifornien.
+We were shocked by the news.|Wir waren schockiert über die Nachricht.
+Yes, I completely agree with you.|Ja, ich stimme dir völlig zu.
+His house is next to the park.|Sein Haus ist neben dem Park.
+Do you prefer summer or winter?|Magst du Sommer oder Winter lieber?
+Who is that woman over there?|Wer ist diese Frau da drüben?
+I stayed inside because it was raining.|Ich bin drinnen geblieben, weil es geregnet hat.
+Some people prefer to work early.|Manche Menschen arbeiten lieber früh.
+Then we went for a walk.|Dann sind wir spazieren gegangen.
+Please say that one more time.|Bitte sag das noch einmal.
+I ate an orange for breakfast.|Ich habe zum Frühstück eine Orange gegessen.
+Can you show me the directions?|Kannst du mir den Weg zeigen?
+This present is for all of us.|Dieses Geschenk ist für uns alle.
+I'm feeling a little tired today.|Ich fühle mich heute ein wenig müde.
+I will never forget your advice.|Ich werde deinen Rat nie vergessen.
+You are too generous to me.|Du bist zu großzügig zu mir.
+I'm sure we can work this out.|Ich bin sicher, wir können das regeln.
+I need more practice with this.|Ich brauche mehr Übung damit.
+Let's go over the details again.|Lass uns die Details noch einmal durchgehen.
+This is our favorite restaurant.|Das ist unser Lieblingsrestaurant.
+I'm sorry for being late today.|Es tut mir leid, dass ich heute zu spät komme.
+Where did you buy that shirt?|Wo hast du dieses Hemd gekauft?
+Let me try to explain it.|Lass mich versuchen, es zu erklären.
+Maybe we can reschedule for Friday.|Vielleicht können wir auf Freitag verschieben.
+Please sit down and relax.|Bitte setz dich und entspann dich.
+That man is my grandfather.|Dieser Mann ist mein Großvater.
+I am very grateful for your help.|Ich bin sehr dankbar für deine Hilfe.
+The poem was written by my father.|Das Gedicht wurde von meinem Vater geschrieben.
+Don't say anything you'll regret.|Sag nichts, was du später bereuen könntest.
+I really care about your wellbeing.|Dein Wohlbefinden liegt mir wirklich am Herzen.
+Do you have any other questions?|Hast du noch andere Fragen?
+Life is full of unexpected surprises.|Das Leben ist voller unerwarteter Überraschungen.
+Even the smallest gesture can help.|Selbst die kleinste Geste kann helfen.
+Turn off your phone during class.|Schalte dein Telefon während des Unterrichts aus.
+Please pass me the salt.|Bitte reich mir das Salz.
+Thank you for understanding my situation.|Danke, dass du meine Situation verstehst.
+I only want what's best for you.|Ich will nur das Beste für dich.
+Help yourself to some snacks.|Bedien dich bei den Snacks.
+I have two favorite books.|Ich habe zwei Lieblingsbücher.
+Let's talk about this later.|Lass uns später darüber reden.
+People are generally kind at heart.|Die Menschen sind im Grunde ihres Herzens freundlich.
+God has been good to us.|Gott war gut zu uns.
+I am still thinking about your offer.|Ich denke immer noch über dein Angebot nach.
+Wait for me at the entrance.|Warte am Eingang auf mich.
+He walked straight into the wall.|Er ist direkt gegen die Wand gelaufen.
+I need to find my glasses.|Ich muss meine Brille finden.
+Please come visit us again.|Bitte besuch uns wieder.
+That thing is really bothering me.|Dieses Ding stört mich wirklich.
+Call your sister right now.|Ruf sofort deine Schwester an.
+She told me an interesting fact.|Sie hat mir eine interessante Tatsache erzählt.
+That's a really great suggestion.|Das ist ein wirklich guter Vorschlag.
+I've never seen anything like this before.|So etwas habe ich noch nie gesehen.
+I feel much better than yesterday.|Ich fühle mich viel besser als gestern.
+Have you ever visited New York?|Warst du jemals in New York?
+She is smarter than she looks.|Sie ist klüger, als sie aussieht.
+Stay away from that dangerous area.|Halte dich von diesem gefährlichen Bereich fern.
+First, let me introduce myself.|Zuerst möchte ich mich vorstellen.
+I believe in second chances.|Ich glaube an zweite Chancen.
+I hope everything turns out fine.|Ich hoffe, alles wird gut.
+Let's head home before dark.|Lass uns vor Einbruch der Dunkelheit nach Hause gehen.
+We met after the class ended.|Wir haben uns nach Unterrichtsende getroffen.
+This is my final chance to prove myself.|Das ist meine letzte Chance, mich zu beweisen.
+I really like these colorful flowers.|Ich mag diese bunten Blumen wirklich.
+Could you put the groceries away?|Könntest du die Lebensmittel wegräumen?
+Look around and see what you find.|Schau dich um und sieh, was du findest.
+Stop making so much noise.|Hör auf, so viel Lärm zu machen.
+It took me ages to finish.|Ich habe ewig gebraucht, um fertig zu werden.
+I always walk to school on sunny days.|Ich gehe bei Sonnenschein immer zu Fuß zur Schule.
+Listen to what she has to say.|Hör zu, was sie zu sagen hat.
+I absolutely love those paintings.|Ich liebe diese Gemälde über alles.
+That's a massive building.|Das ist ein riesiges Gebäude.
+I have a huge amount of work.|Ich habe eine Unmenge an Arbeit.
+She is a genuinely caring individual.|Sie ist ein wirklich fürsorglicher Mensch.
+I think your calculation is wrong.|Ich denke, deine Berechnung ist falsch.
+I walked through the forest alone.|Ich bin allein durch den Wald gegangen.
+I bought a brand new laptop.|Ich habe einen brandneuen Laptop gekauft.
+I guess we have no choice.|Ich schätze, wir haben keine Wahl.
+Take good care of your health.|Kümmere dich gut um deine Gesundheit.
+That's a really foolish idea.|Das ist eine wirklich dumme Idee.
+My mom is an excellent cook.|Meine Mama ist eine ausgezeichnete Köchin.
+I remember our trip to the mountains.|Ich erinnere mich an unsere Reise in die Berge.
+We should definitely work together.|Wir sollten unbedingt zusammenarbeiten.
+My dad knows how to fix anything.|Mein Papa kann alles reparieren.
+Please leave your shoes at the door.|Bitte lass deine Schuhe an der Tür.
+My mother loves gardening in spring.|Meine Mutter gärtnert im Frühling sehr gerne.
+This is a peaceful little town.|Das ist eine friedliche kleine Stadt.
+I'm not sure I understand your point.|Ich bin mir nicht sicher, ob ich deinen Standpunkt verstehe.
+Actually, I changed my mind.|Eigentlich habe ich meine Meinung geändert.
+I can barely hear you from here.|Ich kann dich von hier kaum hören.
+The baby is finally fast asleep.|Das Baby ist endlich fest eingeschlafen.
+That's a lovely name for a girl.|Das ist ein schöner Name für ein Mädchen.
+My father is a very patient man.|Mein Vater ist ein sehr geduldiger Mann.
+Is there anything else you need?|Brauchst du noch etwas?
+Let's stay positive about the outcome.|Bleiben wir optimistisch, was das Ergebnis angeht.
+Their garden is full of roses.|Ihr Garten ist voller Rosen.
+Of course, you're invited to join us.|Natürlich bist du eingeladen, dich uns anzuschließen.
+She might have already left for work.|Sie ist vielleicht schon zur Arbeit gegangen.
+Never mind, it doesn't matter now.|Schon gut, es spielt jetzt keine Rolle mehr.
+Every student deserves a fair chance.|Jeder Schüler verdient eine faire Chance.
+I have had enough of this nonsense.|Ich habe genug von diesem Unsinn.
+Try your luck with this game.|Versuch dein Glück bei diesem Spiel.
+What on earth happened here?|Was um Himmels willen ist hier passiert?
+She came running to tell me.|Sie kam gerannt, um es mir zu sagen.
+Someone left a message on the table.|Jemand hat eine Nachricht auf dem Tisch hinterlassen.
+Take ownership of your actions.|Übernimm Verantwortung für deine Handlungen.
+My family is coming to visit soon.|Meine Familie kommt bald zu Besuch.
+The whole town celebrated the festival.|Die ganze Stadt hat das Fest gefeiert.
+I need another day to prepare.|Ich brauche noch einen Tag, um mich vorzubereiten.
+The house at the corner is empty.|Das Haus an der Ecke ist leer.
+Be honest with yourself about your mistakes.|Sei ehrlich zu dir selbst über deine Fehler.
+That's actually a brilliant suggestion.|Das ist tatsächlich ein brillanter Vorschlag.
+Ask her if she wants to come.|Frag sie, ob sie kommen möchte.
+We must follow the safety rules.|Wir müssen die Sicherheitsregeln befolgen.
+This old photograph brings back memories.|Dieses alte Foto weckt Erinnerungen.
+That woman is a famous artist.|Diese Frau ist eine berühmte Künstlerin.
+Hello, it's great to meet you.|Hallo, freut mich, dich kennenzulernen.
+Which color do you prefer for the walls?|Welche Farbe bevorzugst du für die Wände?
+This room could use some decoration.|Dieser Raum könnte etwas Dekoration vertragen.
+I don't have enough cash on me.|Ich habe nicht genug Bargeld dabei.
+I left my bag on the train.|Ich habe meine Tasche im Zug vergessen.
+Tonight we're going to a concert.|Heute Abend gehen wir zu einem Konzert.
+That's a genuine concern we have.|Das ist eine berechtigte Sorge, die wir haben.
+My son loves playing the guitar.|Mein Sohn spielt leidenschaftlich gerne Gitarre.
+I hope you enjoy the show tonight.|Ich hoffe, dir gefällt die Show heute Abend.
+Her name was written on the board.|Ihr Name stand an der Tafel.
+We are all in the same situation.|Wir befinden uns alle in derselben Situation.
+I'm incredibly happy with the outcome.|Ich bin unglaublich glücklich über das Ergebnis.
+She looks really elegant in that outfit.|Sie sieht wirklich elegant in diesem Outfit aus.
+That young girl is extremely talented.|Dieses junge Mädchen ist äußerst talentiert.
+Excuse me, sir, you dropped this.|Entschuldigung, mein Herr, Sie haben das fallen lassen.
+Show me what you've drawn there.|Zeig mir, was du da gezeichnet hast.
+We've already discussed this matter thoroughly.|Wir haben dieses Thema bereits ausführlich besprochen.
+May I borrow your pen for a moment?|Darf ich kurz deinen Stift ausleihen?
+Next time we'll know better.|Nächstes Mal wissen wir es besser.
+I have three meetings scheduled today.|Ich habe heute drei Besprechungen geplant.
+We eventually found the missing piece.|Wir haben schließlich das fehlende Teil gefunden.
+The world has so many incredible places.|Die Welt hat so viele unglaubliche Orte.
+Honey, could you set the table?|Schatz, könntest du den Tisch decken?
+I need to calm myself down.|Ich muss mich beruhigen.
+That's exactly what I was going to say.|Das ist genau das, was ich sagen wollte.
+You are probably exhausted after the trip.|Du bist nach der Reise wahrscheinlich erschöpft.
+Her harsh words left me deeply hurt.|Ihre harten Worte haben mich tief verletzt.
+We should both be more understanding.|Wir sollten beide verständnisvoller sein.
+The flowers in the vase are already dead.|Die Blumen in der Vase sind bereits verwelkt.
+Sometimes I just crave some time alone.|Manchmal sehne ich mich einfach nach etwas Zeit für mich allein.
+Since you're here, let's get started.|Da du ja hier bist, lass uns anfangen.
+Excuse me, could you move a little?|Entschuldigung, könntest du etwas zur Seite treten?
+Let's start the presentation now.|Lass uns jetzt mit der Präsentation beginnen.
+Please don't let fear kill your dreams.|Bitte lass nicht zu, dass Angst deine Träume zerstört.
+Learning a new language is hard at first.|Eine neue Sprache zu lernen ist am Anfang schwer.
+Today was a surprisingly productive day.|Heute war ein überraschend produktiver Tag.
+Your new car looks amazing.|Dein neues Auto sieht großartig aus.
+I am fully prepared for this interview.|Ich bin vollständig auf dieses Vorstellungsgespräch vorbereitet.
+We waited until the rain stopped.|Wir haben gewartet, bis der Regen aufhörte.
+I can't achieve this without your support.|Ohne deine Unterstützung kann ich das nicht erreichen.
+Whatever decision you make, I'll support it.|Welche Entscheidung du auch triffst, ich werde sie unterstützen.
+We shook hands and made a deal.|Wir haben uns die Hand geschüttelt und einen Deal gemacht.
+He took the last cookie from the plate.|Er hat sich den letzten Keks vom Teller genommen.
+Once I made a terrible mistake.|Einmal habe ich einen schrecklichen Fehler gemacht.
+My friend lent me some money.|Mein Freund hat mir etwas Geld geliehen.
+My head is spinning with all this information.|Mir schwirrt der Kopf vor lauter Informationen.
+We need to organize our stuff better.|Wir müssen unsere Sachen besser organisieren.
+Most people are kind if you give them a chance.|Die meisten Menschen sind freundlich, wenn man ihnen eine Chance gibt.
+Don't worry too much about the details.|Mach dir nicht zu viele Sorgen über die Details.
+This is the second time I've told you.|Das ist das zweite Mal, dass ich es dir sage.
+Part of the plan involves teamwork.|Ein Teil des Plans beinhaltet Teamarbeit.
+I always try to speak the truth.|Ich versuche immer, die Wahrheit zu sagen.
+My school is just across the street.|Meine Schule ist genau auf der anderen Straßenseite.
+I can't face her after our argument.|Ich kann ihr nach unserem Streit nicht gegenübertreten.
+Please don't forget to call me.|Bitte vergiss nicht, mich anzurufen.
+That's my own personal business.|Das ist meine eigene persönliche Angelegenheit.
+Each student received a certificate.|Jeder Schüler erhielt ein Zertifikat.
+The noise caused a lot of complaints.|Der Lärm verursachte viele Beschwerden.
+I will get back to you soon.|Ich werde mich bald bei dir melden.
+His wife is a very talented artist.|Seine Frau ist eine sehr talentierte Künstlerin.
+Please use this key to open the door.|Bitte benutze diesen Schlüssel, um die Tür zu öffnen.
+This is your chance to shine and prove yourself.|Das ist deine Chance, zu glänzen und dich zu beweisen.
+I have to run some errands now.|Ich muss jetzt noch einige Besorgungen machen.
+Let's move to the next topic.|Lass uns zum nächsten Thema übergehen.
+Anyone is welcome to join our group.|Jeder ist willkommen, unserer Gruppe beizutreten.
+That person over there is my cousin.|Diese Person da drüben ist mein Cousin.
+Bye, we'll catch up soon.|Tschüss, wir melden uns bald.
+Somebody left their umbrella here.|Jemand hat seinen Regenschirm hier liegen lassen.
+My heart was beating very fast.|Mein Herz schlug sehr schnell.
+Such a magnificent view from up here!|Was für eine großartige Aussicht von hier oben!
+At that point, we knew we had to act.|Zu diesem Zeitpunkt wussten wir, dass wir handeln mussten.
+I will see you later this evening.|Ich werde dich heute Abend später sehen.
+Let's meet at the usual coffee shop.|Treffen wir uns im üblichen Café.
+Anyway, I'm glad we had this conversation.|Wie auch immer, ich bin froh, dass wir dieses Gespräch geführt haben.
+I can't find my phone anywhere.|Ich kann mein Handy nirgendwo finden.
+The reason for her absence is unknown.|Der Grund für ihre Abwesenheit ist unbekannt.
+I completely lost my train of thought.|Ich habe völlig den Faden verloren.
+Look at how much you've grown.|Sieh mal, wie sehr du gewachsen bist.
+Please bring your ID with you.|Bitte bring deinen Ausweis mit.
+In that case, I'll have to decline.|In diesem Fall muss ich ablehnen.
+I wish I could stay longer.|Ich wünschte, ich könnte länger bleiben.
+Tomorrow we'll finally have a break.|Morgen haben wir endlich eine Pause.
+Trust your gut feeling on this decision.|Vertraue bei dieser Entscheidung deinem Bauchgefühl.
+Check your work before submitting it.|Überprüfe deine Arbeit, bevor du sie abgibst.
+We have reached the end of the line.|Wir haben das Ende der Linie erreicht.
+You arrived late for the second time.|Du bist zum zweiten Mal zu spät gekommen.
+I simply can't tolerate this behavior anymore.|Ich kann dieses Verhalten einfach nicht länger tolerieren.
+I have exactly five dollars in my wallet.|Ich habe genau fünf Dollar in meiner Brieftasche.
+At least you made an effort.|Zumindest hast du dir Mühe gegeben.
+Our town has a wonderful community spirit.|Unsere Stadt hat einen wunderbaren Gemeinschaftsgeist.
+This year has flown by so quickly.|Dieses Jahr ist so schnell vergangen.
+I make decisions based on logic.|Ich treffe Entscheidungen auf der Grundlage von Logik.
+What exactly do you mean by that?|Was genau meinst du damit?
+Let's play a board game together.|Lass uns zusammen ein Brettspiel spielen.
+I absolutely hate being ignored.|Ich hasse es, ignoriert zu werden.
+We had this conversation a long time ago.|Wir hatten dieses Gespräch schon vor langer Zeit.
+She has such a beautiful singing voice.|Sie hat eine so schöne Singstimme.
+In fact, she is the best candidate.|Tatsächlich ist sie die beste Kandidatin.
+That's a really crazy coincidence.|Das ist ein wirklich verrückter Zufall.
+We're planning a huge party for her.|Wir planen eine große Party für sie.
+Sit over here, there's more room.|Setz dich hierher, hier ist mehr Platz.
+The bakery is open until 9 PM.|Die Bäckerei ist bis 21 Uhr geöffnet.
+I'm genuinely afraid of heights.|Ich habe wirklich Angst vor Höhen.
+This secret is strictly between us.|Dieses Geheimnis bleibt streng zwischen uns.
+You play an important role in our team.|Du spielst eine wichtige Rolle in unserem Team.
+I need to rest my tired eyes.|Ich muss meine müden Augen ausruhen.
+That was a fantastic experience!|Das war eine fantastische Erfahrung!
+That kid is going to go far in life.|Dieses Kind wird es im Leben weit bringen.
+I'm really glad you could make it.|Ich bin wirklich froh, dass du es geschafft hast.
+Everyone deserves to be treated with respect.|Jeder verdient es, mit Respekt behandelt zu werden.
+Have a wonderful day at work.|Hab einen wunderbaren Arbeitstag.
+My sister is much older than me.|Meine Schwester ist viel älter als ich.
+Can you spare a minute for me?|Kannst du mir eine Minute erübrigen?
+Everybody loves a happy ending.|Jeder liebt ein glückliches Ende.
+I need a bit of time to think.|Ich brauche etwas Zeit zum Nachdenken.
+They make a wonderful married couple.|Sie sind ein wunderbares Ehepaar.
+You can either stay here or come with us.|Du kannst entweder hierbleiben oder mit uns kommen.
+His daughter just got accepted to college.|Seine Tochter wurde gerade an der Universität angenommen.
+The cat is hiding somewhere under the couch.|Die Katze versteckt sich irgendwo unter dem Sofa.
+Please break the chocolate into small pieces.|Bitte brich die Schokolade in kleine Stücke.
+Can you open the door for me?|Kannst du mir die Tür öffnen?
+Let's set a reasonable budget for this trip.|Lass uns ein vernünftiges Budget für diese Reise festlegen.
+Close the window, it's chilly outside.|Schließe das Fenster, es ist kühl draußen.
+The exam was surprisingly easy this time.|Die Prüfung war dieses Mal überraschend einfach.
+The doctor advised me to get more rest.|Der Arzt hat mir geraten, mich mehr auszuruhen.
+We didn't travel very far from home.|Wir sind nicht sehr weit von zu Hause weggefahren.
+I love to walk along the river.|Ich liebe es, am Fluss entlangzugehen.
+She needs someone to talk to.|Sie braucht jemanden, mit dem sie reden kann.
+He's in a bit of trouble at work.|Er hat ein paar Probleme bei der Arbeit.
+This book is mine, not yours.|Dieses Buch gehört mir, nicht dir.
+I'm tired, though I can't fall asleep.|Ich bin müde, aber ich kann nicht einschlafen.
+We need to make the most of our time.|Wir müssen das Beste aus unserer Zeit machen.
+This problem is completely different from the last one.|Dieses Problem unterscheidet sich völlig vom vorherigen.
+I had to rush her to the hospital.|Ich musste sie schnell ins Krankenhaus bringen.
+Anybody could have made that error.|Jeder hätte diesen Fehler machen können.
+Everything will be alright in the end.|Am Ende wird alles gut.
+The wedding ceremony was absolutely lovely.|Die Hochzeitszeremonie war absolut wunderschön.
+Please shut the window quietly.|Bitte schließe das Fenster leise.
+I'm sure you're able to handle this alone.|Ich bin sicher, dass du das alleine schaffst.
+We all have to face our fears one day.|Wir müssen uns alle eines Tages unseren Ängsten stellen.
+That moment was absolutely perfect.|Dieser Moment war absolut perfekt.
+The police arrived on the scene quickly.|Die Polizei war schnell am Ort des Geschehens.
+Please stand up straight and tall.|Bitte steh aufrecht und gerade.
+He was hit by a flying baseball.|Er wurde von einem fliegenden Baseball getroffen.
+She told me an incredible story.|Sie hat mir eine unglaubliche Geschichte erzählt.
+We had dinner at a cozy restaurant.|Wir haben in einem gemütlichen Restaurant zu Abend gegessen.
+I'm strongly against any form of bullying.|Ich bin strikt gegen jede Form von Mobbing.
+He always makes such clever jokes.|Er macht immer so kluge Witze.
+Her husband works in a bank.|Ihr Mann arbeitet bei einer Bank.
+I almost missed my flight this morning.|Ich habe heute Morgen fast meinen Flug verpasst.
+That was a really foolish mistake.|Das war ein wirklich dummer Fehler.
+I'll pay for both of our tickets.|Ich bezahle für beide Tickets.
+I honestly can't answer that question right now.|Ich kann diese Frage im Moment ehrlich gesagt nicht beantworten.
+They have four lovely children.|Sie haben vier bezaubernde Kinder.
+His office is just around the corner.|Sein Büro ist gleich um die Ecke.
+She's a remarkably cool and collected person.|Sie ist eine bemerkenswert ruhige und gefasste Person.
+I heard some concerning news today.|Ich habe heute besorgniserregende Neuigkeiten gehört.
+Her child is incredibly bright.|Ihr Kind ist unglaublich klug.
+The glass is half empty, I'm afraid.|Das Glas ist leider halb leer.
+Is this jacket yours or hers?|Gehört diese Jacke dir oder ihr?
+I will cherish this moment forever.|Ich werde diesen Moment für immer in Ehren halten.
+I need at least eight hours of sleep.|Ich brauche mindestens acht Stunden Schlaf.
+Young people often have big ambitions.|Junge Menschen haben oft große Ambitionen.
+Three men were waiting outside.|Drei Männer warteten draußen.
+Sonny, just take a deep breath.|Mein Lieber, atme einfach tief durch.
+I feel lucky to have such supportive friends.|Ich fühle mich glücklich, so unterstützende Freunde zu haben.
+Pick a card from the deck.|Zieh eine Karte vom Stapel.
+Sometimes we just need a break from everything.|Manchmal brauchen wir einfach eine Pause von allem.
+I like them both very much.|Ich mag sie beide sehr.
+My bed is incredibly comfortable.|Mein Bett ist unglaublich bequem.
+I also think we should reconsider.|Ich denke auch, dass wir es uns noch einmal überlegen sollten.
+Let's set a date for the gathering.|Lass uns ein Datum für das Treffen festlegen.
+We need to draw a clear line between work and play.|Wir müssen eine klare Grenze zwischen Arbeit und Freizeit ziehen.
+Don't lose your confidence over this.|Verliere deswegen nicht dein Selbstvertrauen.
+The fire spread rapidly through the forest.|Das Feuer breitete sich schnell im Wald aus.
+You are free to express your opinions.|Du kannst deine Meinung frei äußern.
+Hold my hand and walk with me.|Nimm meine Hand und geh mit mir.
+We need to have a serious discussion.|Wir müssen ein ernsthaftes Gespräch führen.
+Oh no, I stepped in some mud!|Oh nein, ich bin in den Schlamm getreten!
+The sun was hidden behind the clouds.|Die Sonne war hinter den Wolken versteckt.
+My keys are inside my jacket pocket.|Meine Schlüssel sind in meiner Jackentasche.
+The shelf is too high for me to reach.|Das Regal ist zu hoch für mich.
+Go ahead, I'm listening to your argument.|Nur zu, ich höre dir zu.
+This is a truly wonderful opportunity.|Das ist eine wirklich wunderbare Gelegenheit.
+We must fight against injustice.|Wir müssen gegen Ungerechtigkeit kämpfen.
+The past is firmly behind us now.|Die Vergangenheit liegt jetzt hinter uns.
+Cut the cake into generous slices.|Schneide den Kuchen in großzügige Stücke.
+That's quite an impressive achievement.|Das ist eine ziemlich beeindruckende Leistung.
+I accidentally forgot his number.|Ich habe versehentlich seine Nummer vergessen.
+I feel sick and need to sit down.|Mir ist übel und ich muss mich setzen.
+We played a competitive game yesterday.|Wir haben gestern ein Wettkampfspiel gespielt.
+Eat your vegetables before you have dessert.|Iss dein Gemüse, bevor du Nachtisch bekommst.
+Nobody seemed to understand his point.|Niemand schien seinen Standpunkt zu verstehen.
+The death of her grandfather affected her deeply.|Der Tod ihres Großvaters hat sie tief getroffen.
+We all walked along the beautiful coastline.|Wir sind alle an der wunderschönen Küste entlanggelaufen.
+Finally, the truth was revealed.|Endlich wurde die Wahrheit enthüllt.
+She looked genuinely upset by the criticism.|Sie wirkte wirklich verletzt von der Kritik.
+You seem really exhausted, are you okay?|Du siehst wirklich erschöpft aus, geht es dir gut?
+Drive safely and call me when you arrive.|Fahr vorsichtig und ruf mich an, wenn du ankommst.
+The children are playing happily in the yard.|Die Kinder spielen fröhlich im Hof.
+I was standing right in front of the stage.|Ich stand direkt vor der Bühne.
+He was shot in the arm during the incident.|Er wurde bei dem Vorfall am Arm angeschossen.
+Love is the most powerful emotion.|Liebe ist die mächtigste Emotion.
+The instructions are perfectly clear to me.|Die Anweisungen sind für mich völlig klar.
+The soup is too hot to eat right now.|Die Suppe ist zu heiß, um sie jetzt zu essen.
+I have exactly six items on my list.|Ich habe genau sechs Punkte auf meiner Liste.
+Can I offer you a refreshing drink?|Kann ich dir ein erfrischendes Getränk anbieten?
+I absolutely admire your dedication.|Ich bewundere deine Hingabe wirklich.
+How did you manage to achieve all this?|Wie hast du das alles geschafft?
+She gave me a sweet, encouraging smile.|Sie schenkte mir ein süßes, ermutigendes Lächeln.
+I've never felt more alive than this moment.|Ich habe mich noch nie lebendiger gefühlt als in diesem Moment.
+That excuse makes absolutely no sense.|Diese Entschuldigung ergibt überhaupt keinen Sinn.
+Strange things tend to happen at night.|Nachts passieren oft seltsame Dinge.
+She has a very special gift for music.|Sie hat eine ganz besondere Begabung für Musik.
+I bet you can't guess what happened.|Ich wette, du kannst nicht erraten, was passiert ist.
+Blood was dripping from his wound.|Blut tropfte aus seiner Wunde.
+Please don't lie to me about this.|Bitte lüg mich nicht an.
+The train was completely full of passengers.|Der Zug war völlig voll mit Passagieren.
+I have an important business meeting today.|Ich habe heute eine wichtige Geschäftsbesprechung.
+Dear friend, I truly appreciate your honesty.|Lieber Freund, ich schätze deine Ehrlichkeit wirklich.
+Can we grab a cup of coffee together?|Können wir zusammen einen Kaffee trinken gehen?
+That sounds like a wonderful idea.|Das klingt nach einer wunderbaren Idee.
+The failure was entirely my own fault.|Der Fehler war vollkommen meine eigene Schuld.
+Please drink plenty of water.|Bitte trink ausreichend Wasser.
+I have ten more pages to read.|Ich muss noch zehn Seiten lesen.
+Women have made significant contributions to science.|Frauen haben bedeutende Beiträge zur Wissenschaft geleistet.
+You are always welcome in our home.|Du bist in unserem Haus immer willkommen.
+I need to buy a new pair of shoes.|Ich muss ein neues Paar Schuhe kaufen.
+I'll be back within an hour.|Ich bin innerhalb einer Stunde zurück.
+Please speak slowly so I can follow.|Bitte sprich langsam, damit ich folgen kann.
+I think we should rethink this decision.|Ich denke, wir sollten diese Entscheidung überdenken.
+We spent Christmas Day with our family.|Wir haben Weihnachten mit unserer Familie verbracht.
+The human body is an amazing thing.|Der menschliche Körper ist eine erstaunliche Sache.
+Please place your order at the counter.|Bitte gib deine Bestellung an der Theke auf.
+I'll be waiting for you outside.|Ich werde draußen auf dich warten.
+Hang your jacket on the back of the chair.|Häng deine Jacke über die Stuhllehne.
+Things could definitely be a lot worse.|Es könnte auf jeden Fall noch viel schlimmer sein.
+Our company values hard work and honesty.|Unser Unternehmen schätzt harte Arbeit und Ehrlichkeit.
+Can you handle this task on your own?|Kannst du diese Aufgabe alleine bewältigen?
+I want to spend more quality time with you.|Ich möchte mehr wertvolle Zeit mit dir verbringen.
+I totally agree with every word you said.|Ich stimme jedem einzelnen Wort, das du gesagt hast, völlig zu.
+You need to take control of your own life.|Du musst die Kontrolle über dein eigenes Leben übernehmen.
+Their marriage has lasted over forty years.|Ihre Ehe hat über vierzig Jahre gehalten.
+The president gave an inspiring speech.|Der Präsident hielt eine inspirierende Rede.
+Unless you hurry, we'll miss the show.|Wenn du dich nicht beeilst, verpassen wir die Show.
+Please send me a copy of the report.|Bitte schick mir eine Kopie des Berichts.
+I took a beautiful picture of the lake.|Ich habe ein wunderschönes Foto vom See gemacht.
+I have exactly one hundred dollars left.|Ich habe genau einhundert Dollar übrig.
+We really need to change our strategy.|Wir müssen wirklich unsere Strategie ändern.
+Please explain your point more clearly.|Bitte erkläre deinen Standpunkt deutlicher.
+I will certainly consider your suggestion.|Ich werde deinen Vorschlag auf jeden Fall in Betracht ziehen.
+Please sign your name on this line.|Bitte unterschreibe auf dieser Linie.
+That boy is extremely polite and helpful.|Dieser Junge ist äußerst höflich und hilfsbereit.
+We need to build a healthy relationship.|Wir müssen eine gesunde Beziehung aufbauen.
+I need to wash my hair tonight.|Ich muss mir heute Abend die Haare waschen.
+You have a difficult choice to make.|Du hast eine schwierige Entscheidung zu treffen.
+You can go anywhere you like this weekend.|Du kannst dieses Wochenende überall hingehen, wo du willst.
+I know a secret that nobody else knows.|Ich kenne ein Geheimnis, das niemand sonst kennt.
+The future holds endless possibilities for us.|Die Zukunft hält unendliche Möglichkeiten für uns bereit.
+Wishing you all the best of luck.|Ich wünsche dir alles Gute.
+She has a very gentle and caring touch.|Sie hat eine sehr sanfte und fürsorgliche Berührung.
+He gave her a loving kiss on the cheek.|Er gab ihr einen liebevollen Kuss auf die Wange.
+A large crane lifted the heavy equipment.|Ein großer Kran hob die schwere Ausrüstung.
+That's a very difficult question to answer.|Das ist eine sehr schwierige Frage zu beantworten.
+She was obviously upset by the remark.|Sie war offensichtlich verärgert über die Bemerkung.
+I felt a sharp pain in my lower back.|Ich verspürte einen scharfen Schmerz im unteren Rücken.
+Let's go straight home after work.|Lass uns nach der Arbeit direkt nach Hause gehen.
+She moved with such natural elegance and grace.|Sie bewegte sich mit solch natürlicher Eleganz und Anmut.
+I love wearing white shirts in summer.|Ich trage im Sommer gerne weiße Hemden.
+It was a fast and thrilling ride.|Es war eine schnelle und aufregende Fahrt.
+I forgot the exact word I wanted to use.|Ich habe das genaue Wort vergessen, das ich verwenden wollte.
+The food at that restaurant is fantastic.|Das Essen in diesem Restaurant ist fantastisch.
+None of them could solve the problem.|Keiner von ihnen konnte das Problem lösen.
+I can drive you to the station.|Ich kann dich zum Bahnhof fahren.
+Hard work and patience are key to success.|Harte Arbeit und Geduld sind der Schlüssel zum Erfolg.
+They are planning to marry next spring.|Sie planen, nächstes Frühjahr zu heiraten.
+The light in this room is very dim.|Das Licht in diesem Raum ist sehr schwach.
+I'm going to have a major test tomorrow.|Ich werde morgen eine große Prüfung haben.
+Please drop the package at the front desk.|Bitte lege das Paket an der Rezeption ab.
+Frankly, I don't care about his opinion.|Ehrlich gesagt ist mir seine Meinung egal.
+I sent the invitation two days ago.|Ich habe die Einladung vor zwei Tagen verschickt.
+The city looks so pretty at night.|Die Stadt sieht nachts so hübsch aus.
+I had a very strange dream last night.|Ich habe letzte Nacht einen sehr seltsamen Traum gehabt.
+We must protect the environment for our children.|Wir müssen die Umwelt für unsere Kinder schützen.
+She just celebrated her twenty-first birthday.|Sie hat gerade ihren einundzwanzigsten Geburtstag gefeiert.
+Our class is full of enthusiastic students.|Unsere Klasse ist voller begeisterter Schüler.
+We planned a nice surprise for her.|Wir haben eine schöne Überraschung für sie geplant.
+I will love you until the end of time.|Ich werde dich bis ans Ende der Zeit lieben.
+The old man had lived a very poor life.|Der alte Mann hatte ein sehr armes Leben geführt.
+She was completely mad at the situation.|Sie war über die Situation völlig verärgert.
+Everyone was invited except for your brother.|Alle waren eingeladen, außer deinem Bruder.
+He was holding a gun in his hand.|Er hielt eine Waffe in der Hand.
+I honestly don't know who to believe.|Ich weiß ehrlich gesagt nicht, wem ich glauben soll.
+Let's go out and dance tonight.|Lass uns heute Abend ausgehen und tanzen.
+Please take a seat and make yourself comfortable.|Bitte setz dich und mach es dir bequem.
+This is especially relevant to our current project.|Das ist besonders relevant für unser aktuelles Projekt.
+The situation is becoming increasingly serious.|Die Situation wird zunehmend ernster.
+Besides that, we have no other concerns.|Abgesehen davon haben wir keine weiteren Bedenken.
+We have a deadline coming up next week.|Wir haben nächste Woche eine Frist.
+He built that house all by himself.|Er hat dieses Haus ganz allein gebaut.
+We need to take action immediately.|Wir müssen sofort handeln.
+This book is definitely worth reading.|Dieses Buch ist definitiv lesenswert.
+Place the book on the very top shelf.|Lege das Buch ganz oben auf das Regal.
+I expect a full report from you.|Ich erwarte einen vollständigen Bericht von dir.
+I would rather just stay home today.|Ich würde heute lieber zu Hause bleiben.
+This project involves all of us equally.|Dieses Projekt betrifft uns alle gleichermaßen.
+I swear I have never lied to you.|Ich schwöre, ich habe dich nie belogen.
+Can I have a small piece of cake?|Kann ich ein kleines Stück Kuchen haben?
+I'm very busy preparing for my exams.|Ich bin sehr beschäftigt mit der Vorbereitung auf meine Prüfungen.
+We all need to follow the law.|Wir müssen uns alle an das Gesetz halten.
+She wore a beautiful black evening gown.|Sie trug ein wunderschönes schwarzes Abendkleid.
+Let's watch a movie and relax tonight.|Lass uns heute Abend einen Film anschauen und entspannen.
+I need to catch my flight at 6 PM.|Ich muss meinen Flug um 18 Uhr erreichen.
+They live in a peaceful country village.|Sie leben in einem friedlichen Dorf auf dem Land.
+I have less patience than I used to.|Ich habe weniger Geduld als früher.
+Perhaps we should approach this differently.|Vielleicht sollten wir das anders angehen.
+Let's take it step by step and be careful.|Lass es uns Schritt für Schritt angehen und vorsichtig sein.
+Don't fall into the trap of comparing yourself.|Verfalle nicht in die Falle, dich mit anderen zu vergleichen.
+My dog is very loyal and playful.|Mein Hund ist sehr treu und verspielt.
+We still have a chance to win this game.|Wir haben immer noch eine Chance, dieses Spiel zu gewinnen.
+This is a very personal and private decision.|Das ist eine persönliche und private Entscheidung.
+I must admit that I was wrong about you.|Ich muss zugeben, dass ich mich in dir geirrt habe.
+We have a serious problem to address.|Wir haben ein ernstes Problem, das wir ansprechen müssen.
+The murder mystery kept everyone guessing.|Das Mordrätsel hielt alle in Atem.
+She is an incredibly strong and brave person.|Sie ist eine unglaublich starke und mutige Person.
+He was known for his evil deeds.|Er war für seine bösen Taten bekannt.
+I feel truly content and happy right now.|Ich fühle mich jetzt wirklich zufrieden und glücklich.
+Being honest is not always the easiest path.|Ehrlich zu sein ist nicht immer der einfachste Weg.
+She has a sharp eye for detail.|Sie hat ein scharfes Auge für Details.
+My phone broke when it fell.|Mein Telefon ist kaputt gegangen, als es herunterfiel.
+I truly miss the old days.|Die guten alten Tage vermisse ich wirklich.
+After a long day, I feel completely tired.|Nach einem langen Tag fühle ich mich völlig erschöpft.
+This evening sky looks breathtaking.|Dieser Abendhimmel sieht atemberaubend aus.
+Every human being has inherent worth.|Jeder Mensch hat einen inhärenten Wert.
+The red flag signaled danger ahead.|Die rote Flagge signalisierte Gefahr voraus.
+I read the entire book in one sitting.|Ich habe das ganze Buch in einem Durchgang gelesen.
+Our road trip was full of adventures.|Unser Roadtrip war voller Abenteuer.
+I decided to join a book club.|Ich habe beschlossen, einem Buchclub beizutreten.
+I suppose we have no other choice.|Ich nehme an, wir haben keine andere Wahl.
+Try to remain calm under pressure.|Versuche, unter Druck ruhig zu bleiben.
+I can't imagine life without you.|Ich kann mir ein Leben ohne dich nicht vorstellen.
+Life isn't always fair, but we adapt.|Das Leben ist nicht immer fair, aber wir passen uns an.
+Don't blame yourself for what happened.|Gib dir selbst nicht die Schuld für das, was passiert ist.
+We walked down a quiet street.|Wir gingen eine ruhige Straße entlang.
+She lives in a small apartment.|Sie lebt in einer kleinen Wohnung.
+The court reached a final verdict.|Das Gericht hat ein endgültiges Urteil gefällt.`;
+
+const SENTENCES = SENT_RAW.trim().split("\n").map(line => {
+  const p = line.indexOf("|");
+  if (p < 0) return null;
+  const en = line.slice(0, p).trim();
+  const de = line.slice(p + 1).trim();
+  if (!en || !de) return null;
+  return { en, de };
+}).filter(Boolean);
+
+const STRIP = /^(to|the|a|an)\s+/;
+function norm(s) {
+  return String(s).toLowerCase()
+    .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss")
+    .replace(/[\u064B-\u0652\u0670\u0640]/g, "")
+    .replace(/[^\p{L}\p{N}\s]/gu, " ")
+    .replace(/\s+/g, " ").trim()
+    .replace(STRIP, "").trim();
+}
+function lev(a, b) {
+  if (a === b) return 0;
+  const m = a.length, n = b.length;
+  if (!m) return n; if (!n) return m;
+  let prev = new Array(n + 1), cur = new Array(n + 1);
+  for (let j = 0; j <= n; j++) prev[j] = j;
+  for (let i = 1; i <= m; i++) {
+    cur[0] = i;
+    for (let j = 1; j <= n; j++)
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    const t = prev; prev = cur; cur = t;
+  }
+  return prev[n];
+}
+function wordOverlap(input, expected) {
+  const a = norm(input).split(/\s+/).filter(Boolean);
+  const b = norm(expected).split(/\s+/).filter(Boolean);
+  if (!a.length || !b.length) return 0;
+  const setB = new Set(b);
+  let hits = 0;
+  for (const w of a) if (setB.has(w)) hits++;
+  return hits / Math.max(a.length, b.length);
+}
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function hashStr(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return Math.abs(h);
+}
+
+let currentAudio = null;
+function speak(text, btn, lang) {
+  if (!text) return;
+  const clean = String(text).trim();
+  if (!clean) return;
+  if (currentAudio) { try { currentAudio.pause(); } catch(e){} currentAudio = null; }
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  if (btn) { btn.classList.add("loading"); setTimeout(() => btn.classList.remove("loading"), 1500); }
+  const tl = lang === "en" ? "en" : lang === "ar" ? "ar" : "de";
+  const url = "https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=" + tl + "&q=" + encodeURIComponent(clean);
+  const audio = new Audio(url);
+  currentAudio = audio;
+  audio.addEventListener("ended", () => { if (btn) btn.classList.remove("loading"); if (currentAudio === audio) currentAudio = null; });
+  audio.addEventListener("error", () => { if (btn) btn.classList.remove("loading"); });
+  audio.play().catch(() => { if (btn) btn.classList.remove("loading"); });
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-say]");
+  if (!b) return;
+  e.preventDefault();
+  speak(b.dataset.say, b, b.dataset.lang || "de");
+});
+
+/* =============== Arabic translation (Google) =============== */
+const AR_CACHE_KEY = "ar_cache_v6";
+let arCache = {};
+try { arCache = JSON.parse(localStorage.getItem(AR_CACHE_KEY) || "{}"); } catch (e) { arCache = {}; }
+let arSaveTimer = null;
+function arSave() {
+  if (arSaveTimer) clearTimeout(arSaveTimer);
+  arSaveTimer = setTimeout(() => {
+    try { localStorage.setItem(AR_CACHE_KEY, JSON.stringify(arCache)); } catch (e) {}
+  }, 800);
+}
+function arKey(text) { return "ar|" + hashStr(text); }
+const arQueue = [];
+let arRunning = false;
+async function arFetch(text) {
+  const url = "https://translate.googleapis.com/translate_a/single"
+            + "?client=gtx&sl=en&tl=ar&dt=t&q=" + encodeURIComponent(text);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  const data = await res.json();
+  return data[0].map(s => s[0]).join("");
+}
+async function arRunQueue() {
+  if (!arQueue.length) { arRunning = false; return; }
+  arRunning = true;
+  const { text, resolve } = arQueue.shift();
+  const k = arKey(text);
+  if (arCache[k]) resolve(arCache[k]);
+  else {
+    try {
+      const tr = await arFetch(text);
+      arCache[k] = tr;
+      arSave();
+      resolve(tr);
+    } catch (e) { resolve(null); }
+  }
+  setTimeout(arRunQueue, 120);
+}
+function translateToAr(text) {
+  const k = arKey(text);
+  if (arCache[k]) return Promise.resolve(arCache[k]);
+  return new Promise(resolve => {
+    arQueue.push({ text, resolve });
+    if (!arRunning) arRunQueue();
+  });
+}
+
+/* =============== STUDY – Wörter =============== */
+const $ = id => document.getElementById(id);
+const studyList = $("studyList"), studyCount = $("studyCount");
+const searchInput = $("search"), catFilter = $("catFilter");
+
+catFilter.innerHTML = '<option value="">Alle Kategorien</option>' +
+  CATS.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
+
+function renderStudy() {
+  const q = norm(searchInput.value);
+  const cat = catFilter.value;
+  const list = WORDS.filter(w => {
+    if (cat && w.cat !== cat) return false;
+    if (!q) return true;
+    return norm(w.de).includes(q) || norm(w.en).includes(q);
+  });
+  studyCount.textContent = list.length;
+  if (!list.length) { studyList.innerHTML = '<div class="empty">Nichts gefunden</div>'; return; }
+  const limit = 300;
+  const shown = list.slice(0, limit);
+  studyList.innerHTML = shown.map((w, i) => {
+    const ar = arCache[arKey(w.en)];
+    return `
+    <div class="wblock">
+      <div class="top">
+        <span class="tag">${esc(w.cat)}</span>
+        <button class="spk" data-say="${esc(w.de)}" data-lang="de" style="margin-left:auto">🔊</button>
+      </div>
+      <div class="de">${esc(w.de)}</div>
+      <div class="en">${esc(w.en)}</div>
+      <div class="ar-line" data-ar="${i}">${ar ? esc(ar) : '<span class="ar-loading"></span>'}</div>
+    </div>`;
+  }).join("") +
+    (list.length > limit ? `<div class="empty" style="grid-column:1/-1">… ${list.length - limit} weitere</div>` : "");
+
+  shown.forEach((w, i) => {
+    if (arCache[arKey(w.en)]) return;
+    translateToAr(w.en).then(tr => {
+      if (!tr) return;
+      const el = studyList.querySelector(`.ar-line[data-ar="${i}"]`);
+      if (el) el.textContent = tr;
+    });
+  });
+}
+searchInput.addEventListener("input", renderStudy);
+catFilter.addEventListener("change", renderStudy);
+
+/* =============== STUDY – Sätze =============== */
+const sentList = $("sentList"), sentCount = $("sentCount"), sentSearch = $("sentSearch");
+
+function renderSentStudy() {
+  const q = norm(sentSearch.value);
+  const list = SENTENCES.filter(s => {
+    if (!q) return true;
+    if (norm(s.en).includes(q) || norm(s.de).includes(q)) return true;
+    const ar = arCache[arKey(s.en)];
+    if (ar && norm(ar).includes(q)) return true;
+    return false;
+  });
+  sentCount.textContent = list.length;
+  if (!list.length) { sentList.innerHTML = '<div class="empty">Nichts gefunden</div>'; return; }
+  const limit = 60;
+  const shown = list.slice(0, limit);
+  sentList.innerHTML = shown.map((s, i) => {
+    const ar = arCache[arKey(s.en)];
+    return `
+    <div class="sblock" data-i="${i}">
+      <div class="line en">
+        <div class="label">EN</div>
+        <div style="display:grid;grid-template-columns:1fr 40px;align-items:center">
+          <div class="text">${esc(s.en)}</div>
+          <div class="speak-col"><button class="spk" data-say="${esc(s.en)}" data-lang="en">🔊</button></div>
+        </div>
+      </div>
+      <div class="line de">
+        <div class="label">DE</div>
+        <div style="display:grid;grid-template-columns:1fr 40px;align-items:center">
+          <div class="text">${esc(s.de)}</div>
+          <div class="speak-col"><button class="spk" data-say="${esc(s.de)}" data-lang="de">🔊</button></div>
+        </div>
+      </div>
+      <div class="line ar">
+        <div class="label">AR</div>
+        <div style="display:grid;grid-template-columns:40px 1fr;align-items:center">
+          <div class="speak-col"><button class="spk" data-say="${esc(ar || s.en)}" data-lang="ar">🔊</button></div>
+          <div class="text ar" data-ar="${i}">${ar ? esc(ar) : '<span class="ar-loading"></span>'}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join("") +
+  (list.length > limit ? `<div class="empty" style="grid-column:1/-1">… ${list.length - limit} weitere</div>` : "");
+
+  shown.forEach((s, i) => {
+    if (arCache[arKey(s.en)]) return;
+    translateToAr(s.en).then(tr => {
+      if (!tr) return;
+      const el = sentList.querySelector(`.s-ar[data-ar="${i}"]`);
+      if (el) {
+        el.textContent = tr;
+        const spk = el.parentElement.querySelector(".spk");
+        if (spk) spk.dataset.say = tr;
+      }
+    });
+  });
+}
+sentSearch.addEventListener("input", renderSentStudy);
+
+/* =============== TEST =============== */
+const catBoxes = $("catBoxes");
+catBoxes.innerHTML = CATS.map(c =>
+  `<label class="chip on"><input type="checkbox" value="${esc(c)}" checked> ${esc(c)}</label>`
+).join("");
+catBoxes.addEventListener("change", e => {
+  if (e.target.tagName === "INPUT") e.target.closest(".chip").classList.toggle("on", e.target.checked);
+});
+
+const qArea = $("qArea"), qMode = $("qMode"), qDir = $("qDir"),
+      catField = $("catField"), dirField = $("dirField");
+
+const WORD_MODES = `
+  <option value="mc">Multiple Choice</option>
+  <option value="type">Selbst schreiben</option>`;
+const SENT_MODES = `
+  <option value="choose-tr">Richtige Übersetzung wählen</option>
+  <option value="blank">Lücke füllen</option>
+  <option value="type">Ganzen Satz schreiben</option>`;
+
+function updateSetupVisibility() {
+  const area = qArea.value;
+  catField.style.display = area === "word" ? "" : "none";
+  dirField.style.display = area === "word" ? "" : "none";
+  const prevMode = qMode.value;
+  if (area === "word") {
+    qMode.innerHTML = WORD_MODES;
+    qMode.value = (prevMode === "mc" || prevMode === "type") ? prevMode : "mc";
+  } else {
+    qMode.innerHTML = SENT_MODES;
+    qMode.value = (prevMode === "choose-tr" || prevMode === "blank" || prevMode === "type") ? prevMode : "choose-tr";
+  }
+}
+qArea.addEventListener("change", updateSetupVisibility);
+updateSetupVisibility();
+
+let quiz = null;
+let lastWrong = [];
+let stats = JSON.parse(localStorage.getItem("detrainer.stats") || '{"answered":0,"correct":0}');
+
+function makeWordOptions(w, dir) {
+  const correct = (dir === "de-en" || dir === "de-ar") ? w.en : w.de;
+  const pool = WORDS.filter(x => x.cat === w.cat && x.de !== w.de);
+  shuffle(pool);
+  const opts = [correct];
+  for (const p of pool) {
+    const v = (dir === "de-en" || dir === "de-ar") ? p.en : p.de;
+    if (opts.some(o => norm(o) === norm(v))) continue;
+    opts.push(v);
+    if (opts.length >= 4) break;
+  }
+  return shuffle(opts);
+}
+function makeSentenceOptions(s, targetLang) {
+  const correct = targetLang === "de" ? s.de : s.en;
+  const others = shuffle(SENTENCES.filter(x => (targetLang === "de" ? x.de : x.en) !== correct));
+  const opts = [correct];
+  for (const o of others) {
+    const v = targetLang === "de" ? o.de : o.en;
+    if (opts.some(x => norm(x) === norm(v))) continue;
+    opts.push(v);
+    if (opts.length >= 4) break;
+  }
+  return shuffle(opts);
+}
+function makeBlankOptions(blankWord) {
+  const clean = String(blankWord).replace(/[.,!?;:„""'']/g, "").trim();
+  const pool = shuffle(WORDS.filter(w => norm(w.de) !== norm(clean) && w.de.length > 2));
+  const opts = [clean];
+  for (const p of pool) {
+    if (opts.some(o => norm(o) === norm(p.de))) continue;
+    opts.push(p.de);
+    if (opts.length >= 4) break;
+  }
+  return shuffle(opts);
+}
+
+$("startBtn").addEventListener("click", () => {
+  const area = qArea.value;
+  const count = parseInt($("qCount").value, 10);
+  const wrongOnly = $("qWrongOnly").checked;
+  let items = [];
+
+  if (area === "word") {
+    const cats = [...catBoxes.querySelectorAll("input:checked")].map(i => i.value);
+    if (!cats.length) { alert("Bitte mindestens eine Kategorie wählen."); return; }
+    let pool = WORDS.filter(w => cats.includes(w.cat));
+    if (wrongOnly) {
+      if (!lastWrong.length) { alert("Keine Fehler gespeichert."); return; }
+      const keys = new Set(lastWrong.map(x => x.key));
+      pool = pool.filter(w => keys.has("w:" + w.de));
+      if (!pool.length) { alert("In dieser Auswahl sind keine Fehler."); return; }
+    }
+    shuffle(pool);
+    if (count > 0) pool = pool.slice(0, count);
+    const dir = qDir.value;
+    items = pool.map(w => ({
+      kind: "word", word: w,
+      dir: dir === "mix" ? (["en-de","de-en","de-ar","en-ar","ar-de"][Math.floor(Math.random()*5)]) : dir
+    }));
+  } else {
+    let pool = SENTENCES.slice();
+    if (wrongOnly) {
+      if (!lastWrong.length) { alert("Keine Fehler gespeichert."); return; }
+      const keys = new Set(lastWrong.map(x => x.key));
+      pool = pool.filter(s => keys.has("s:" + s.en));
+      if (!pool.length) { alert("In dieser Auswahl sind keine Fehler."); return; }
+    }
+    shuffle(pool);
+    if (count > 0) pool = pool.slice(0, count);
+    items = pool.map(s => ({ kind: "sent", sent: s }));
+  }
+
+  quiz = {
+    items, i: 0, score: 0, wrong: [],
+    mode: qMode.value, area, answered: false,
+    streak: 0, maxStreak: 0
+  };
+  $("setupPanel").classList.add("hidden");
+  $("resultPanel").classList.add("hidden");
+  $("quizPanel").classList.remove("hidden");
+  renderQuestion();
+});
+
+function renderQuestion() {
+  const item = quiz.items[quiz.i];
+  quiz.answered = false;
+  quiz.currentTargetLang = null;
+  quiz.currentExpected = null;
+  quiz.blankWord = null;
+
+  $("qProgress").textContent = `${quiz.i + 1} / ${quiz.items.length}`;
+  $("qScore").innerHTML = quiz.streak >= 3
+    ? `<span class="score">✓ ${quiz.score}</span> &nbsp;·&nbsp; <span class="streak">⚡ ${quiz.streak}</span>`
+    : `<span class="score">✓ ${quiz.score}</span>`;
+  $("qBar").style.width = (quiz.i / quiz.items.length * 100) + "%";
+  $("qFeedback").className = "feedback";
+  $("qFeedback").innerHTML = "";
+  $("qNext").classList.add("hidden");
+  const body = $("qBody");
+  body.innerHTML = "";
+
+  if (item.kind === "word") return renderWordQ(item);
+  return renderSentQ(item);
+}
+
+function renderWordQ(item) {
+  const w = item.word, dir = item.dir;
+  let hint;
+  if (dir === "en-de") hint = "EN → DE";
+  else if (dir === "de-en") hint = "DE → EN";
+  else if (dir === "de-ar") hint = "DE → AR";
+  else if (dir === "en-ar") hint = "EN → AR";
+  else if (dir === "ar-de") hint = "AR → DE";
+  else hint = "?";
+
+  if (dir === "ar-de" || dir === "en-ar") {
+    $("qPrompt").innerHTML = `<div class="hint">${hint}</div><div class="content ar">…</div>`;
+    translateToAr(w.en).then(tr => {
+      if (!tr) return;
+      const el = $("qPrompt").querySelector(".content.ar");
+      if (el) el.textContent = tr;
+    });
+  } else {
+    const promptText = (dir === "de-en" || dir === "de-ar") ? w.de : w.en;
+    const sayLang = (dir === "de-en" || dir === "de-ar") ? "de" : "en";
+    $("qPrompt").innerHTML = `<div class="hint">${hint}</div><div class="bigword">${esc(promptText)}</div>
+      <button class="spk" data-say="${esc(promptText)}" data-lang="${sayLang}">🔊</button>`;
+  }
+
+  const body = $("qBody");
+  if (quiz.mode === "mc") {
+    const opts = makeWordOptions(w, dir);
+    body.innerHTML = `<div class="opts">${opts.map(o =>
+      `<button class="opt" data-val="${esc(o)}">${esc(o)}</button>`).join("")}</div>`;
+    body.querySelectorAll(".opt").forEach(btn => btn.addEventListener("click", () => submitAnswer(btn.dataset.val, btn)));
+  } else {
+    body.innerHTML = `<input type="text" id="answerInput" autocomplete="off" spellcheck="false" placeholder="Antwort eingeben…">`;
+    const inp = $("answerInput");
+    inp.focus();
+    inp.addEventListener("keydown", e => {
+      if (e.key === "Enter") { e.preventDefault(); if (quiz.answered) nextQuestion(); else submitAnswer(inp.value, null); }
+    });
+  }
+}
+
+function renderSentQ(item) {
+  const s = item.sent;
+
+  if (quiz.mode === "choose-tr") {
+    const useEn = Math.random() < 0.5;
+    const promptText = useEn ? s.en : s.de;
+    const targetLang = useEn ? "de" : "en";
+    quiz.currentTargetLang = targetLang;
+    quiz.currentExpected = targetLang === "de" ? s.de : s.en;
+    const hint = useEn ? "Wähle die richtige deutsche Übersetzung" : "Choose the correct English translation";
+    $("qPrompt").innerHTML = `<div class="hint">${hint}</div>
+      <div class="content">${esc(promptText)}</div>
+      <button class="spk" data-say="${esc(promptText)}" data-lang="${useEn ? "en" : "de"}">🔊</button>`;
+    const opts = makeSentenceOptions(s, targetLang);
+    const body = $("qBody");
+    body.innerHTML = `<div class="opts cols1">${opts.map(o =>
+      `<button class="opt" data-val="${esc(o)}">${esc(o)}</button>`).join("")}</div>`;
+    body.querySelectorAll(".opt").forEach(btn => btn.addEventListener("click", () => submitAnswer(btn.dataset.val, btn)));
+    return;
+  }
+
+  if (quiz.mode === "blank") {
+    const words = s.de.split(/\s+/);
+    const blacklist = /^(der|die|das|ein|eine|einen|einem|einer|und|oder|aber|ich|du|er|sie|es|wir|ihr|nicht|sehr|auch|noch|schon|nur|zu|im|in|am|an|auf|für|mit|von|bei|nach|vor|aus|ist|sind|war|waren|hat|haben|wird|werden|dass|wenn|als|wie|so|ja|nein|man|sich|mich|dich|mein|dein|sein|ihr|unser|euer)$/i;
+    const candidates = words.map((w, i) => ({ w, i }))
+      .filter(x => {
+        const st = x.w.replace(/[.,!?;:„""'']/g, "");
+        return st.length > 3 && !blacklist.test(st);
+      });
+    if (!candidates.length) { quiz.mode = "choose-tr"; return renderSentQ(item); }
+    const chosen = candidates[Math.floor(Math.random() * candidates.length)];
+    const cleanWord = chosen.w.replace(/[.,!?;:„""'']/g, "");
+    quiz.blankWord = cleanWord;
+    const blanked = words.map((w, i) => i === chosen.i ? "____" : w).join(" ");
+    $("qPrompt").innerHTML = `<div class="hint">Ergänze das fehlende Wort</div>
+      <div class="content">${esc(blanked)}</div>
+      <button class="spk" data-say="${esc(s.de)}" data-lang="de">🔊</button>`;
+    const opts = makeBlankOptions(cleanWord);
+    const body = $("qBody");
+    body.innerHTML = `<div class="opts">${opts.map(o =>
+      `<button class="opt" data-val="${esc(o)}">${esc(o)}</button>`).join("")}</div>`;
+    body.querySelectorAll(".opt").forEach(btn => btn.addEventListener("click", () => submitAnswer(btn.dataset.val, btn)));
+    return;
+  }
+
+  const useEn = Math.random() < 0.5;
+  const promptText = useEn ? s.en : s.de;
+  const targetLang = useEn ? "de" : "en";
+  quiz.currentTargetLang = targetLang;
+  quiz.currentExpected = targetLang === "de" ? s.de : s.en;
+  $("qPrompt").innerHTML = `<div class="hint">Übersetze ins ${targetLang === "de" ? "Deutsche" : "Englische"}</div>
+    <div class="content">${esc(promptText)}</div>
+    <button class="spk" data-say="${esc(promptText)}" data-lang="${useEn ? "en" : "de"}">🔊</button>`;
+  const body = $("qBody");
+  body.innerHTML = `<textarea id="sentenceInput" rows="3" placeholder="Deine Übersetzung…"></textarea>`;
+  const inp = $("sentenceInput");
+  inp.focus();
+  inp.addEventListener("keydown", e => {
+    if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); if (quiz.answered) nextQuestion(); else submitAnswer(inp.value, null); }
+  });
+}
+
+function submitAnswer(value, btn) {
+  if (!quiz || quiz.answered) return;
+  const item = quiz.items[quiz.i];
+  let res, correctDisp, pairEn, pairDe, pairAr;
+
+  if (item.kind === "word") {
+    const w = item.word, dir = item.dir;
+    let expected;
+    if (dir === "en-de" || dir === "ar-de") expected = w.de;
+    else expected = w.en;
+    correctDisp = expected;
+    pairEn = w.en; pairDe = w.de; pairAr = arCache[arKey(w.en)] || null;
+
+    if (quiz.mode === "mc") {
+      res = (norm(value) === norm(correctDisp)) ? { status: "correct" } : { status: "wrong" };
+    } else {
+      const norms = [expected, ...w.alts].map(norm).filter(Boolean);
+      const n = norm(value);
+      if (!n) res = { status: "empty" };
+      else if (norms.includes(n)) res = { status: "correct" };
+      else {
+        let bestD = 99, bestA = norms[0] || "";
+        for (const a of norms) { const d = lev(n, a); if (d < bestD) { bestD = d; bestA = a; } }
+        const tol = bestA.length > 7 ? 2 : (bestA.length > 4 ? 1 : 0);
+        res = (bestD > 0 && bestD <= tol) ? { status: "almost" } : { status: "wrong" };
+      }
+    }
+  } else {
+    const s = item.sent;
+    pairEn = s.en; pairDe = s.de; pairAr = arCache[arKey(s.en)] || null;
+
+    if (quiz.mode === "choose-tr") {
+      correctDisp = quiz.currentExpected || "";
+      res = (norm(value) === norm(correctDisp)) ? { status: "correct" } : { status: "wrong" };
+    } else if (quiz.mode === "blank") {
+      correctDisp = quiz.blankWord || "";
+      const n = norm(value);
+      if (!n) res = { status: "empty" };
+      else if (norm(value) === norm(quiz.blankWord)) res = { status: "correct" };
+      else {
+        const d = lev(n, norm(quiz.blankWord));
+        const tol = (quiz.blankWord || "").length > 7 ? 2 : 1;
+        res = (d <= tol) ? { status: "almost" } : { status: "wrong" };
+      }
+    } else {
+      const expected = quiz.currentExpected || "";
+      correctDisp = expected;
+      const sim = wordOverlap(value, expected);
+      if (sim >= 0.75) res = { status: "correct", sim };
+      else if (sim >= 0.45) res = { status: "almost", sim };
+      else res = { status: "wrong", sim };
+    }
+  }
+
+  quiz.answered = true;
+  stats.answered++;
+  const ok = res.status === "correct" || res.status === "almost";
+  if (ok) { quiz.score++; stats.correct++; quiz.streak++; if (quiz.streak > quiz.maxStreak) quiz.maxStreak = quiz.streak; }
+  else quiz.streak = 0;
+  localStorage.setItem("detrainer.stats", JSON.stringify(stats));
+
+  const fb = $("qFeedback");
+  const triHTML = `<div class="tri">
+    <div class="line en">
+      <div class="lbl">EN</div>
+      <div style="display:grid;grid-template-columns:1fr 40px;align-items:center">
+        <div class="val">${esc(pairEn)}</div>
+        <div class="speak-col"><button class="spk" data-say="${esc(pairEn)}" data-lang="en">🔊</button></div>
+      </div>
+    </div>
+    <div class="line de">
+      <div class="lbl">DE</div>
+      <div style="display:grid;grid-template-columns:1fr 40px;align-items:center">
+        <div class="val">${esc(pairDe)}</div>
+        <div class="speak-col"><button class="spk" data-say="${esc(pairDe)}" data-lang="de">🔊</button></div>
+      </div>
+    </div>
+    <div class="line ar">
+      <div class="lbl">AR</div>
+      <div style="display:grid;grid-template-columns:40px 1fr;align-items:center">
+        <div class="speak-col"><button class="spk" data-say="${esc(pairAr || pairEn)}" data-lang="ar">🔊</button></div>
+        <div class="val ar-line">${pairAr ? esc(pairAr) : '<span class="ar-loading"></span>'}</div>
+      </div>
+    </div>
+  </div>`;
+
+  let head = "";
+  if (res.status === "correct") {
+    fb.className = "feedback show ok";
+    head = `✓ <b>Richtig!</b>`;
+  } else if (res.status === "almost") {
+    fb.className = "feedback show almost";
+    const simPct = res.sim ? Math.round(res.sim * 100) + "% " : "";
+    head = `◐ <b>Fast richtig</b> ${simPct}<br>
+      Deine Antwort: <b>${esc(value || "(leer)")}</b><br>
+      Erwartet: <b>${esc(correctDisp)}</b>`;
+  } else {
+    const key = item.kind === "word" ? "w:" + item.word.de : "s:" + item.sent.en;
+    quiz.wrong.push({ key, kind: item.kind, en: pairEn, de: pairDe, your: value || "(leer)" });
+    fb.className = "feedback show bad";
+    head = `✗ <b>Falsch.</b><br>
+      Deine Antwort: <b>${esc(value || "(leer)")}</b><br>
+      Richtig: <b>${esc(correctDisp)}</b>`;
+  }
+  fb.innerHTML = head + triHTML;
+
+  if (!pairAr) {
+    translateToAr(pairEn).then(tr => {
+      if (!tr) return;
+      const el = fb.querySelector(".ar-line");
+      if (el) el.textContent = tr;
+      const spk = fb.querySelector('.tri .line.ar .spk');
+      if (spk) spk.dataset.say = tr;
+    });
+  }
+
+  if (quiz.mode === "mc" || quiz.mode === "choose-tr" || quiz.mode === "blank") {
+    document.querySelectorAll(".opt").forEach(b => {
+      b.disabled = true;
+      if (norm(b.dataset.val) === norm(correctDisp)) b.classList.add("right");
+      else if (b === btn && !ok) b.classList.add("wrong");
+    });
+  } else {
+    const inp = $("answerInput") || $("sentenceInput");
+    if (inp) { inp.disabled = true; inp.style.borderColor = ok ? "var(--ok)" : "var(--bad)"; }
+  }
+
+  $("qScore").innerHTML = quiz.streak >= 3
+    ? `<span class="score">✓ ${quiz.score}</span> &nbsp;·&nbsp; <span class="streak">⚡ ${quiz.streak}</span>`
+    : `<span class="score">✓ ${quiz.score}</span>`;
+  $("qNext").classList.remove("hidden");
+  $("qNext").textContent = (quiz.i === quiz.items.length - 1) ? "ERGEBNIS →" : "WEITER →";
+  $("qNext").focus();
+}
+
+function nextQuestion() {
+  if (quiz.i < quiz.items.length - 1) { quiz.i++; renderQuestion(); }
+  else showResult();
+}
+$("qNext").addEventListener("click", nextQuestion);
+
+function showResult() {
+  $("quizPanel").classList.add("hidden");
+  const rp = $("resultPanel");
+  rp.classList.remove("hidden");
+  const total = quiz.items.length;
+  const pct = Math.round(quiz.score / total * 100);
+  const msg = pct === 100 ? "Perfekt!" : pct >= 80 ? "Sehr gut!" : pct >= 50 ? "Weiter üben!" : "Nicht aufgeben!";
+  lastWrong = quiz.wrong.slice();
+
+  rp.innerHTML = `
+    <div class="panel-head"><h2>Ergebnis</h2></div>
+    <div class="score-big">${quiz.score} / ${total}</div>
+    <p style="text-align:center;color:var(--dim);margin:0">${pct}% · ${msg}</p>
+    <div class="statGrid">
+      <div class="s"><div class="n">${quiz.maxStreak || 0}</div><div class="l">Serie</div></div>
+      <div class="s"><div class="n">${quiz.wrong.length}</div><div class="l">Fehler</div></div>
+      <div class="s"><div class="n">${stats.answered ? Math.round(stats.correct / stats.answered * 100) : 0}%</div><div class="l">Gesamt</div></div>
+    </div>
+    ${quiz.wrong.length ? `
+      <div class="panel-head" style="margin-top:20px"><h2>Fehler zum Wiederholen</h2></div>
+      <div class="wrongList">
+        ${quiz.wrong.map(x => `
+          <div class="wrongItem">
+            <div class="l1">${esc(x.en)}</div>
+            <div class="l2">${esc(x.de)} — Deine: <b style="color:var(--bad)">${esc(x.your)}</b></div>
+          </div>`).join("")}
+      </div>` : `<div class="empty" style="margin-top:16px">Keine Fehler — perfekt! 🎯</div>`}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:20px">
+      <button class="primary" id="againWrong" ${quiz.wrong.length ? "" : "disabled"}>NUR FEHLER</button>
+      <button class="primary" id="againAll">NEU</button>
+    </div>`;
+
+  const aw = $("againWrong");
+  if (aw && quiz.wrong.length) {
+    aw.addEventListener("click", () => { $("qWrongOnly").checked = true; $("startBtn").click(); });
+  }
+  $("againAll").addEventListener("click", () => {
+    $("resultPanel").classList.add("hidden");
+    $("setupPanel").classList.remove("hidden");
+    $("qWrongOnly").checked = false;
+  });
+}
+
+document.querySelectorAll(".tabs button").forEach(b => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll(".tabs button").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    const v = b.dataset.view;
+    $("view-words").classList.toggle("hidden", v !== "words");
+    $("view-sents").classList.toggle("hidden", v !== "sents");
+    $("view-test").classList.toggle("hidden", v !== "test");
+  });
+});
+
+renderStudy();
+renderSentStudy();
+console.log("Wörter:", WORDS.length, "| Sätze:", SENTENCES.length);
+</script>
+</body>
+</html>
